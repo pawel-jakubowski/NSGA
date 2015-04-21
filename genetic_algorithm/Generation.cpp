@@ -20,3 +20,11 @@ unsigned Generation::size() const
 void Generation::selection(unsigned)
 {
 }
+
+Fronts Generation::nonDominatedSort()
+{
+    Fronts F;
+    if(subjects.size() > 0)
+        F.push_back(subjects);
+    return F;
+}

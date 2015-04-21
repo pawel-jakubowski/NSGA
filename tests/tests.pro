@@ -28,7 +28,8 @@ HEADERS += \
     ../math/Expression.h \
     ../libraries/exprtk.hpp \
     ../libraries/CustomAssertion.h \
-    genetic_algorithm/GenotypeMock.h
+    genetic_algorithm/GenotypeMock.h \
+    genetic_algorithm/GenerationMock.h
 
 # add new folders here
 INCLUDEPATH += genetic_algorithm/

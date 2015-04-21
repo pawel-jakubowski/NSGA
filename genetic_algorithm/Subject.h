@@ -6,6 +6,7 @@
 class Subject
 {
 public:
+    Subject(const Genotype& newGen);
     Subject(ExpressionPtr newf1, ExpressionPtr newf2);
     Subject(const Subject& parentA, const Subject& parentB);
     virtual ~Subject() {}
@@ -17,6 +18,7 @@ public:
     void setRank(const unsigned& newRank);
     void setDistance(const unsigned& newDistance);
     
+    bool isDominatedBy(const Subject& s);
     // Crowded distance operator
     bool operator<(const Subject& r);
 protected:
