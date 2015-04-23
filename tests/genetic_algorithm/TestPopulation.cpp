@@ -4,16 +4,14 @@
 
 class PopulationTest
 {
-    ExpressionPtr f1, f2;
+    Expression f1, f2;
 public:
     const unsigned subjectsCount;
     AssertSpy assertion;
     Population population;
 
     PopulationTest()
-        : f1(new Expression())
-        , f2(new Expression())
-        , subjectsCount(50)
+        : subjectsCount(50)
         , population(subjectsCount, f1, f2)
     {
         assertion.reset();

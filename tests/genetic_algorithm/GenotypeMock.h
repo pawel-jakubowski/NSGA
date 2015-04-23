@@ -6,7 +6,7 @@
 class GenotypeMock : public Genotype
 {
 public:
-    GenotypeMock(std::vector<double> x, ExpressionPtr f1, ExpressionPtr f2)
+    GenotypeMock(std::vector<double> x, Expression& f1, Expression& f2)
         : Genotype(f1, f2)
     {
         getFValues(f1, f2, x);

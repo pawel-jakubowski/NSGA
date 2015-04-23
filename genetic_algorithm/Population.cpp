@@ -1,7 +1,7 @@
 #include "Population.h"
 #include <CustomAssertion.h>
 
-Population::Population(unsigned firstGenerationSize, ExpressionPtr newf1, ExpressionPtr newf2)
+Population::Population(unsigned firstGenerationSize, Expression& newf1, Expression& newf2)
     : f1(newf1),
       f2(newf2),
       generations(1, Generation(firstGenerationSize, f1, f2))

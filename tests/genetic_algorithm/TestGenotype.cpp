@@ -5,16 +5,14 @@ class GenotypeTest
 {
 public:
     std::vector<double> x;
-    ExpressionPtr f1, f2;
+    Expression f1, f2;
     std::unique_ptr<GenotypeMock> gen;
 
     GenotypeTest()
         : x{1,2,3,4,5}
-        , f1(new Expression())
-        , f2(new Expression())
     {
-        f1->parse("x1+x2+x3+x4+x5");
-        f2->parse("x1-x2-x3-x4-x5");
+        f1.parse("x1+x2+x3+x4+x5");
+        f2.parse("x1-x2-x3-x4-x5");
         gen.reset(new GenotypeMock(x, f1, f2));
     }
 };
@@ -66,15 +64,15 @@ TEST_FIXTURE(GenotypeWithFValuesTest, initialExpressionsCorectness)
 
 TEST_FIXTURE(GenotypeWithFValuesTest, genotypeIsConstantAfterReparse)
 {
-    f1->parse("x1^2+x2^2+x3^2+x4^2+x5^2");
-    f2->parse("sqrt(x1-x2-x3-x4-x5)");
+    f1.parse("x1^2+x2^2+x3^2+x4^2+x5^2");
+    f2.parse("sqrt(x1-x2-x3-x4-x5)");
     CHECK_EQUAL(f1Value, gen->rateByF1());
     CHECK_EQUAL(f2Value, gen->rateByF2());
 }
 
 TEST_FIXTURE(GenotypeWithFValuesTest, genotypeIsConstantAfterChangingX)
 {
-    f1->at("x1") = f2->at("x5") = 20;
+    f1.at("x1") = f2.at("x5") = 20;
     CHECK_EQUAL(f1Value, gen->rateByF1());
     CHECK_EQUAL(f2Value, gen->rateByF2());
 }

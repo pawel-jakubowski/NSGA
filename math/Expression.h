@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 typedef std::vector<double> doublesVector;
 typedef std::vector<doublesVector> doublesMatrix;

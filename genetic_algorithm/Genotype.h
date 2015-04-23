@@ -5,12 +5,10 @@
 #include <memory>
 #include <vector>
 
-typedef std::shared_ptr<Expression> ExpressionPtr;
-
 class Genotype
 {
 public:
-    Genotype(ExpressionPtr f1, ExpressionPtr f2);
+    Genotype(Expression& f1, Expression& f2);
     Genotype(const Genotype& genA, const Genotype& genB);
     virtual ~Genotype() {}
 
@@ -23,10 +21,15 @@ protected:
     double f2Value;
     std::vector<double> x;
 
+<<<<<<< HEAD
     double generateRandom(double lowerBound, double upperBound);
     double generateRandomN(double center, double sigma);
     void fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound);
     void getFValues(ExpressionPtr f1, ExpressionPtr f2, std::vector<double>& variables);
+=======
+    void fillWithRandomVariables(std::vector<double>& randomX);
+    void getFValues(Expression& f1, Expression& f2, std::vector<double>& x);
+>>>>>>> Implement non dominated sort
 };
 
 #endif // GENOTYPE_H

@@ -6,14 +6,14 @@
 class Population
 {
 public:
-    Population(unsigned firstGenerationSize, ExpressionPtr newf1, ExpressionPtr newf2);
+    Population(unsigned firstGenerationSize, Expression& newf1, Expression& newf2);
 
     void generateGenerations(unsigned generationsCount);
     unsigned generationsCount();
     unsigned sizeOfGeneration(unsigned generationNumber);
 private:
-    ExpressionPtr f1;
-    ExpressionPtr f2;
+    Expression& f1;
+    Expression& f2;
     std::vector<Generation> generations;
 };
 

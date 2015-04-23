@@ -7,7 +7,7 @@ class Subject
 {
 public:
     Subject(const Genotype& newGen);
-    Subject(ExpressionPtr newf1, ExpressionPtr newf2);
+    Subject(Expression &f1, Expression &f2);
     Subject(const Subject& parentA, const Subject& parentB);
     virtual ~Subject() {}
 

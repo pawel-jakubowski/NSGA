@@ -9,12 +9,12 @@
 class SubjectTest
 {
 public:
-    ExpressionPtr f1, f2;
+    Expression f1, f2;
     Subject individual;
 
     SubjectTest()
-        : f1(new Expression(5))
-        , f2(new Expression(5))
+        : f1(5)
+        , f2(5)
         , individual(f1, f2)
     {
     }
@@ -92,35 +92,24 @@ public:
 
     SubjectDominationTest() : x{1,1,0,0,0}
     {
-        f1->parse("x1-x2");
-        f2->parse("x1+x2");
+        f1.parse("x1-x2");
+        f2.parse("x1+x2");
         std::vector<double> x1{1,0.5,0,1,-1};
         std::vector<double> x2{1,1.5,0,5,-5};
+        std::vector<std::shared_ptr<Subject>> subjects(5);
 
-        x[0] = x1[0];
-        x[1] = x2[0];
-        gen.reset(new GenotypeMock(x,f1,f2));
-        A.reset(new Subject(*gen));
-
-        x[0] = x1[1];
-        x[1] = x2[1];
-        gen.reset(new GenotypeMock(x,f1,f2));
-        B.reset(new Subject(*gen));
-
-        x[0] = x1[2];
-        x[1] = x2[2];
-        gen.reset(new GenotypeMock(x,f1,f2));
-        C.reset(new Subject(*gen));
-
-        x[0] = x1[3];
-        x[1] = x2[3];
-        gen.reset(new GenotypeMock(x,f1,f2));
-        D.reset(new Subject(*gen));
-
-        x[0] = x1[4];
-        x[1] = x2[4];
-        gen.reset(new GenotypeMock(x,f1,f2));
-        E.reset(new Subject(*gen));
+        for (unsigned i = 0; i < x1.size(); ++i)
+        {
+            x[0] = x1[i];
+            x[1] = x2[i];
+            gen.reset(new GenotypeMock(x,f1,f2));
+            subjects[i].reset(new Subject(*gen));
+        }
+        A = subjects[0];
+        B = subjects[1];
+        C = subjects[2];
+        D = subjects[3];
+        E = subjects[4];
     }
 };
 

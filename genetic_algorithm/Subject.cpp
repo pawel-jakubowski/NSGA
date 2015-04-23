@@ -5,8 +5,8 @@ Subject::Subject(const Genotype &newGen)
 {
 }
 
-Subject::Subject(ExpressionPtr newf1, ExpressionPtr newf2)
-    : gen(newf1, newf2)
+Subject::Subject(Expression& f1, Expression& f2)
+    : gen(f1, f2)
 {
 }
 

@@ -5,9 +5,9 @@
 
 using std::cout;
 
-Genotype::Genotype(ExpressionPtr f1, ExpressionPtr f2) : f1Value(0), f2Value(0)
+Genotype::Genotype(Expression& f1, Expression& f2) : f1Value(0), f2Value(0)
 {
-    assert(f1->variablesCount() == f2->variablesCount());
+    assert(f1.variablesCount() == f2.variablesCount());
 
     x.resize(f1->variablesCount());
     double LB = -5;
@@ -85,8 +85,8 @@ void Genotype::getFValues(ExpressionPtr f1, ExpressionPtr f2, std::vector<double
 {
     x = variables;
     int i = -1;
-    for(auto& key : f1->getAllVariableKeys())
-        f1->at(key) = f2->at(key) = x[++i];
-    f1Value = f1->value();
-    f2Value = f2->value();
+    for(auto& key : f1.getAllVariableKeys())
+        f1.at(key) = f2.at(key) = x[++i];
+    f1Value = f1.value();
+    f2Value = f2.value();
 }
