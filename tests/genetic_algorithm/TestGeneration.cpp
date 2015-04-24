@@ -1,17 +1,22 @@
 #include <unittest++/UnitTest++.h>
 #include <GenerationMock.h>
 #include <GenotypeMock.h>
+#include <CustomAssertion.h>
 
 class GenerationTest
 {
 public:
+    AssertSpy assertion;
     Expression f1, f2;
     unsigned generationSize;
     Generation generation;
 
     GenerationTest()
         : generationSize(50)
-        , generation(generationSize, f1, f2) {}
+        , generation(generationSize, f1, f2)
+    {
+        assertion.reset();
+    }
 };
 
 TEST_FIXTURE(GenerationTest, generationCreation)
@@ -25,12 +30,12 @@ TEST_FIXTURE(GenerationTest, produceNextGeneration)
     CHECK_EQUAL(generationSize, newGeneration.size());
 }
 
-class GenerationSortingTest : public GenerationTest
+class GenerationWithSubjects : public GenerationTest
 {
 public:
     std::vector<Subject> subjects;
 
-    GenerationSortingTest() : GenerationTest()
+    GenerationWithSubjects() : GenerationTest()
     {
         f1.parse("x1-x2");
         f2.parse("x1+x2");
@@ -69,7 +74,7 @@ public:
     }
 };
 
-TEST_FIXTURE(GenerationSortingTest, nonDominatedSortForEmptyGeneration)
+TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForEmptyGeneration)
 {
     generationSize = 0;
     GenerationMock generation = GenerationMock(generationSize, f1, f2);
@@ -78,7 +83,7 @@ TEST_FIXTURE(GenerationSortingTest, nonDominatedSortForEmptyGeneration)
     CHECK_EQUAL(0, fronts.size());
 }
 
-TEST_FIXTURE(GenerationSortingTest, nonDominatedSortForGenerationWithOneSubject)
+TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForGenerationWithOneSubject)
 {
     generationSize = 1;
     GenerationMock generation = GenerationMock(generationSize, f1, f2);
@@ -87,7 +92,7 @@ TEST_FIXTURE(GenerationSortingTest, nonDominatedSortForGenerationWithOneSubject)
     CHECK_EQUAL(1, fronts.size());
 }
 
-TEST_FIXTURE(GenerationSortingTest, nonDominatedSortSimpleCase)
+TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortSimpleCase)
 {
     GenerationMock generation = GenerationMock(subjects, f1, f2);
     Fronts fronts = generation.nonDominatedSort();
@@ -99,24 +104,57 @@ TEST_FIXTURE(GenerationSortingTest, nonDominatedSortSimpleCase)
     CHECK_EQUAL(1, fronts[3].size());
 }
 
-class GenerationCrowdingDistance : public GenerationSortingTest
+TEST_FIXTURE(GenerationWithSubjects, distanceCalculationWithNoFronts)
+{
+    GenerationMock generation = GenerationMock(generationSize, f1, f2);
+
+    CHECK_EQUAL(0, assertion.fails());
+    generation.calculateCrowdingDistances();
+    CHECK_EQUAL(1, assertion.fails());
+}
+
+class GenerationWithFronts : public GenerationWithSubjects
 {
 public:
     GenerationMock generation;
     Fronts fronts;
 
-    GenerationCrowdingDistance()
-        : GenerationSortingTest(), generation(subjects, f1, f2)
+    GenerationWithFronts()
+        : GenerationWithSubjects(), generation(subjects, f1, f2)
     {
         fronts = generation.nonDominatedSort();
     }
 };
 
-TEST_FIXTURE(GenerationCrowdingDistance, initialFronts)
+TEST_FIXTURE(GenerationWithFronts, initialValues)
 {
     CHECK_EQUAL(4, fronts.size());
     CHECK_EQUAL(5, fronts[0].size());
     CHECK_EQUAL(3, fronts[1].size());
     CHECK_EQUAL(1, fronts[2].size());
     CHECK_EQUAL(1, fronts[3].size());
+    for(auto& subject : generation.getSubjects())
+        CHECK_EQUAL(0, subject.getDistance());
+}
+
+TEST_FIXTURE(GenerationWithFronts, crowdingDistanceAssignment)
+{
+    generation.calculateCrowdingDistances();
+    fronts = generation.getFronts();
+
+    const double inf = std::numeric_limits<double>::infinity();
+
+    CHECK_CLOSE(inf, fronts[0][0].getDistance(), 0.01);
+    CHECK_CLOSE(0.28, fronts[0][1].getDistance(), 0.01);
+    CHECK_CLOSE(0.19, fronts[0][2].getDistance(), 0.01);
+    CHECK_CLOSE(0.25, fronts[0][3].getDistance(), 0.01);
+    CHECK_CLOSE(inf, fronts[0][4].getDistance(), 0.01);
+
+    CHECK_CLOSE(inf, fronts[1][0].getDistance(), 0.01);
+    CHECK_CLOSE(0.12, fronts[1][1].getDistance(), 0.01);
+    CHECK_CLOSE(inf, fronts[1][2].getDistance(), 0.01);
+
+    CHECK_CLOSE(inf, fronts[2][0].getDistance(), 0.01);
+
+    CHECK_CLOSE(inf, fronts[3][0].getDistance(), 0.01);
 }

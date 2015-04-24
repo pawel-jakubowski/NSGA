@@ -28,6 +28,8 @@ protected:
     void addSubjectToFront(const unsigned& frontNumber, const unsigned& subjectIndex);
     void createFirstFront();
     void fillOtherFronts();
+
+    void calculateCrowdingDistances();
 };
 
 #endif // GENERATION_H

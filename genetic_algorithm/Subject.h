@@ -14,9 +14,9 @@ public:
     double rateByF1() const;
     double rateByF2() const;
     const unsigned& getRank() const;
-    unsigned getDistance() const;
+    const double& getDistance() const;
     void setRank(const unsigned& newRank);
-    void setDistance(const unsigned& newDistance);
+    void setDistance(const double& newDistance);
     
     bool isDominatedBy(const Subject& s);
     // Crowded distance operator
@@ -24,7 +24,23 @@ public:
 protected:
     Genotype gen;
     unsigned nondominationRank;
-    unsigned crowdingDistance;
+    double crowdingDistance;
+};
+
+struct compareByF1
+{
+    inline bool operator() (const Subject& subject1, const Subject& subject2)
+    {
+        return (subject1.rateByF1() < subject2.rateByF1());
+    }
+};
+
+struct compareByF2
+{
+    inline bool operator() (const Subject& subject1, const Subject& subject2)
+    {
+        return (subject1.rateByF2() < subject2.rateByF2());
+    }
 };
 
 #endif // SUBJECT_H

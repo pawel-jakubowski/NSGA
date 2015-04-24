@@ -1,4 +1,5 @@
 #include "Generation.h"
+#include "CustomAssertion.h"
 
 Generation::Generation(unsigned subjectsCount, Expression& newf1, Expression& newf2)
     : f1(&newf1)
@@ -51,9 +52,8 @@ void Generation::checkDominations(const unsigned& p, const unsigned& q)
 
 void Generation::addSubjectToFront(const unsigned& frontNumber, const unsigned& subjectIndex)
 {
-    unsigned rank = (frontNumber != 0) ? frontNumber : 1;
+    subjects[subjectIndex].setRank(frontNumber + 1);
     fronts[frontNumber].push_back(subjects[subjectIndex]);
-    subjects[subjectIndex].setRank(rank);
 }
 
 void Generation::createFirstFront()
@@ -81,6 +81,59 @@ void Generation::fillOtherFronts()
                 if (howManyDominatesSubject[subjectIndex] == 0)
                     addSubjectToFront(n+1, subjectIndex);
             }
+        }
+    }
+}
+
+void Generation::calculateCrowdingDistances()
+{
+    assert(fronts.size() != 0);
+
+    const double infinity = std::numeric_limits<double>::infinity();
+    double tmpDistance = 0;
+    double f1Max = std::numeric_limits<double>::min();
+    double f1Min = infinity;
+    double f2Max = std::numeric_limits<double>::min();
+    double f2Min = infinity;
+
+    double tmpFValue = 0;
+    for(auto& subject : subjects)
+    {
+        tmpFValue = subject.rateByF1();
+        if (f1Max < tmpFValue)
+            f1Max = tmpFValue;
+        if (f1Min > tmpFValue)
+            f1Min = tmpFValue;
+
+        tmpFValue = subject.rateByF2();
+        if (f2Max < tmpFValue)
+            f2Max = tmpFValue;
+        if (f2Min > tmpFValue)
+            f2Min = tmpFValue;
+    }
+
+    for(auto& front : fronts)
+    {
+        std::sort(front.begin(), front.end(), compareByF1());
+        front[0].setDistance(infinity);
+        front[front.size()-1].setDistance(infinity);
+
+        for(unsigned k = 1; k < front.size()-1; ++k)
+        {
+            tmpDistance = front[k].getDistance()+
+                    (front[k+1].rateByF1()-front[k-1].rateByF1())/(f1Max-f1Min);
+            front[k].setDistance(tmpDistance);
+        }
+
+        std::sort(front.begin(), front.end(), compareByF2());
+        front[0].setDistance(infinity);
+        front[front.size()-1].setDistance(infinity);
+
+        for(unsigned k = 1; k < front.size()-1; ++k)
+        {
+            tmpDistance = front[k].getDistance()+
+                    (front[k+1].rateByF2()-front[k-1].rateByF2())/(f2Max-f2Min);
+            front[k].setDistance(tmpDistance);
         }
     }
 }

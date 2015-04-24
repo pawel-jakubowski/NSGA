@@ -42,13 +42,13 @@ TEST_FIXTURE(SubjectTest, setAndGetRank)
 
 TEST_FIXTURE(SubjectTest, setAndGetDistance)
 {
-    CHECK_EQUAL(0, individual.getDistance());
+    CHECK_CLOSE(0, individual.getDistance(), 0.01);
     individual.setDistance(1);
-    CHECK_EQUAL(1, individual.getDistance());
+    CHECK_CLOSE(1, individual.getDistance(), 0.01);
 
-    const unsigned infinity = std::numeric_limits<unsigned>::max();
+    const double infinity = std::numeric_limits<double>::infinity();
     individual.setDistance(infinity);
-    CHECK_EQUAL(infinity, individual.getDistance());
+    CHECK_CLOSE(infinity, individual.getDistance(), 0.01);
 }
 
 class SubjectOperatorsTest : public SubjectTest

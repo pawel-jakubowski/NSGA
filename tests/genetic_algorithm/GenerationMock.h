@@ -17,8 +17,19 @@ public:
         subjects = newSubjects;
     }
 
+    const std::vector<Subject>& getSubjects()
+    {
+        return subjects;
+    }
+
+    const Fronts& getFronts()
+    {
+        return fronts;
+    }
+
     // Change function visibility for testing purposes
     using Generation::nonDominatedSort;
+    using Generation::calculateCrowdingDistances;
 };
 
 #endif // GENERATIONMOCK_H
