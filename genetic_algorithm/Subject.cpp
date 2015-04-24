@@ -1,17 +1,29 @@
 #include "Subject.h"
 
+#include <iostream>
+
 Subject::Subject(const Genotype &newGen)
     : gen(newGen)
+    , nondominationRank(0)
+    , crowdingDistance(0)
 {
+    std::cout << "crowding = " << crowdingDistance << std::endl;
 }
 
 Subject::Subject(Expression& f1, Expression& f2)
     : gen(f1, f2)
+    , nondominationRank(0)
+    , crowdingDistance(0)
 {
+    std::cout << "(f1 f2) crowding = " << crowdingDistance << std::endl;
 }
 
-Subject::Subject(const Subject &parentA, const Subject &parentB) : gen(parentA.gen, parentB.gen)
+Subject::Subject(const Subject &parentA, const Subject &parentB)
+    : gen(parentA.gen, parentB.gen)
+    , nondominationRank(0)
+    , crowdingDistance(0)
 {
+    std::cout << "(child) crowding = " << crowdingDistance << std::endl;
 }
 
 double Subject::rateByF1() const
@@ -29,8 +41,9 @@ const unsigned &Subject::getRank() const
     return nondominationRank;
 }
 
-const unsigned &Subject::getDistance() const
+unsigned Subject::getDistance() const
 {
+    std::cout << crowdingDistance << std::endl;
     return crowdingDistance;
 }
 
@@ -41,6 +54,7 @@ void Subject::setRank(const unsigned &newRank)
 
 void Subject::setDistance(const unsigned &newDistance)
 {
+    std::cout << crowdingDistance << " is now " << newDistance << std::endl;
     crowdingDistance = newDistance;
 }
 

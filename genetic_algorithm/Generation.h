@@ -19,14 +19,15 @@ protected:
 
     std::vector<std::list<unsigned>> dominatedSubjects;
     std::vector<int> howManyDominatesSubject;
+    Fronts fronts;
 
     void selection(unsigned endSubjectsCount);
 
-    Fronts nonDominatedSort();
+    const Fronts& nonDominatedSort();
     void checkDominations(const unsigned& p, const unsigned& q);
-    void addSubjectToFront(Fronts& F, const unsigned& frontNumber, const unsigned& subjectIndex);
-    void fillFirstFront(Fronts& F);
-    void fillOtherFronts(Fronts& F);
+    void addSubjectToFront(const unsigned& frontNumber, const unsigned& subjectIndex);
+    void createFirstFront();
+    void fillOtherFronts();
 };
 
 #endif // GENERATION_H

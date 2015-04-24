@@ -1,15 +1,12 @@
 #include "Genotype.h"
 #include <CustomAssertion.h>
 #include <random>
-#include <iostream>
-
-using std::cout;
 
 Genotype::Genotype(Expression& f1, Expression& f2) : f1Value(0), f2Value(0)
 {
     assert(f1.variablesCount() == f2.variablesCount());
 
-    x.resize(f1->variablesCount());
+    x.resize(f1.variablesCount());
     double LB = -5;
     double UB = 5;
     fillWithRandomVariables(x, LB, UB);
@@ -30,17 +27,14 @@ Genotype::Genotype(const Genotype &genA, const Genotype &genB)
             x[i] = Genotype::generateRandom(fenotypeA[i], fenotypeB[i]);
         else
             x[i] = Genotype::generateRandom(fenotypeB[i], fenotypeA[i]);
-
-        cout << "x" << i << "=" << x[i] << std::endl;
     }
     mutate();
 }
 
 void Genotype::mutate()
 {   for(auto& xElem : x)
-    {   unsigned i=0;
+    {
         xElem += generateRandomN(0,1);
-        cout << "xel" << i++ << "=" << xElem << std::endl;
     }
 }
 
@@ -81,7 +75,7 @@ void Genotype::fillWithRandomVariables(std::vector<double>& randomX, double lowe
         x = generateRandom(lowerBound, upperBound);
 }
 
-void Genotype::getFValues(ExpressionPtr f1, ExpressionPtr f2, std::vector<double>& variables)
+void Genotype::getFValues(Expression& f1, Expression& f2, std::vector<double>& variables)
 {
     x = variables;
     int i = -1;

@@ -21,15 +21,10 @@ protected:
     double f2Value;
     std::vector<double> x;
 
-<<<<<<< HEAD
     double generateRandom(double lowerBound, double upperBound);
     double generateRandomN(double center, double sigma);
     void fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound);
-    void getFValues(ExpressionPtr f1, ExpressionPtr f2, std::vector<double>& variables);
-=======
-    void fillWithRandomVariables(std::vector<double>& randomX);
-    void getFValues(Expression& f1, Expression& f2, std::vector<double>& x);
->>>>>>> Implement non dominated sort
+    void getFValues(Expression& f1, Expression& f2, std::vector<double>& variables);
 };
 
 #endif // GENOTYPE_H

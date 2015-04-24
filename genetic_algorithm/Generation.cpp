@@ -1,5 +1,4 @@
 #include "Generation.h"
-#include <iostream>
 
 Generation::Generation(unsigned subjectsCount, Expression& newf1, Expression& newf2)
     : f1(&newf1)
@@ -24,22 +23,22 @@ void Generation::selection(unsigned)
 {
 }
 
-Fronts Generation::nonDominatedSort()
+const Fronts& Generation::nonDominatedSort()
 {
-    Fronts F;
+    fronts.clear();
     if(subjects.size() > 0)
     {
-        F.resize(1);
+        fronts.resize(1);
         std::fill(dominatedSubjects.begin(), dominatedSubjects.end(), std::list<unsigned>());
         std::fill(howManyDominatesSubject.begin(), howManyDominatesSubject.end(), 0);
 
-        fillFirstFront(F);
-        fillOtherFronts(F);
+        createFirstFront();
+        fillOtherFronts();
 
-        if(F[F.size()-1].empty())
-            F.pop_back();
+        if(fronts[fronts.size()-1].empty())
+            fronts.pop_back();
     }
-    return F;
+    return fronts;
 }
 
 void Generation::checkDominations(const unsigned& p, const unsigned& q)
@@ -50,14 +49,14 @@ void Generation::checkDominations(const unsigned& p, const unsigned& q)
         howManyDominatesSubject[p] += 1;
 }
 
-void Generation::addSubjectToFront(Fronts& F, const unsigned& frontNumber, const unsigned& subjectIndex)
+void Generation::addSubjectToFront(const unsigned& frontNumber, const unsigned& subjectIndex)
 {
     unsigned rank = (frontNumber != 0) ? frontNumber : 1;
-    F[frontNumber].push_back(subjects[subjectIndex]);
+    fronts[frontNumber].push_back(subjects[subjectIndex]);
     subjects[subjectIndex].setRank(rank);
 }
 
-void Generation::fillFirstFront(Fronts& F)
+void Generation::createFirstFront()
 {
     for(unsigned i = 0; i < subjects.size(); ++i)
     {
@@ -65,22 +64,22 @@ void Generation::fillFirstFront(Fronts& F)
             checkDominations(i, j);
 
         if(howManyDominatesSubject[i] == 0)
-            addSubjectToFront(F, 0, i);
+            addSubjectToFront(0, i);
     }
 }
 
-void Generation::fillOtherFronts(Fronts& F)
+void Generation::fillOtherFronts()
 {
-    for(unsigned n = 0; !F[n].empty(); ++n)
+    for(unsigned n = 0; !fronts[n].empty(); ++n)
     {
-        F.push_back(std::vector<Subject>());
-        for(unsigned i = 0; i < F[n].size(); ++i)
+        fronts.push_back(std::vector<Subject>());
+        for(unsigned i = 0; i < fronts[n].size(); ++i)
         {
             for(auto& subjectIndex : dominatedSubjects[i])
             {
                 howManyDominatesSubject[subjectIndex] -= 1;
                 if (howManyDominatesSubject[subjectIndex] == 0)
-                    addSubjectToFront(F, n+1, subjectIndex);
+                    addSubjectToFront(n+1, subjectIndex);
             }
         }
     }
