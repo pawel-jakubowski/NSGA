@@ -7,8 +7,8 @@ Subject::Subject(const Genotype &newGen)
 {
 }
 
-Subject::Subject(Expression& f1, Expression& f2)
-    : gen(f1, f2)
+Subject::Subject(GoalFunctions& f)
+    : gen(f)
     , nondominationRank(0)
     , crowdingDistance(0)
 {
@@ -21,14 +21,9 @@ Subject::Subject(const Subject &parentA, const Subject &parentB)
 {
 }
 
-double Subject::rateByF1() const
+const double& Subject::rateByF(const unsigned& function) const
 {
-    return gen.rateByF1();
-}
-
-double Subject::rateByF2() const
-{
-    return gen.rateByF2();
+    return gen.rateByF(function);
 }
 
 const unsigned &Subject::getRank() const
@@ -53,8 +48,8 @@ void Subject::setDistance(const double &newDistance)
 
 bool Subject::isDominatedBy(const Subject &s)
 {
-    bool isDominatedWithRespectToF1 = (s.rateByF1() < rateByF1()) && (s.rateByF2() <= rateByF2());
-    bool isDominatedWithRespectToF2 = (s.rateByF2() < rateByF2()) && (s.rateByF1() <= rateByF1());
+    bool isDominatedWithRespectToF1 = (s.rateByF(0) < rateByF(0)) && (s.rateByF(1) <= rateByF(1));
+    bool isDominatedWithRespectToF2 = (s.rateByF(1) < rateByF(1)) && (s.rateByF(0) <= rateByF(0));
     return isDominatedWithRespectToF1 || isDominatedWithRespectToF2;
 }
 

@@ -1,25 +1,28 @@
 #include <unittest++/UnitTest++.h>
 #include <GenotypeMock.h>
+#include <iostream>
 
 class GenotypeTest
 {
 public:
     std::vector<double> x;
-    Expression f1, f2;
+    GoalFunctions f;
     std::unique_ptr<GenotypeMock> gen;
 
     GenotypeTest()
         : x{1,2,3,4,5}
+        , f(2,5)
     {
-        f1.parse("x1+x2+x3+x4+x5");
-        f2.parse("x1-x2-x3-x4-x5");
-        gen.reset(new GenotypeMock(x, f1, f2));
+        f[0].parse("x1+x2+x3+x4+x5");
+        f[1].parse("x1-x2-x3-x4-x5");
+        gen.reset(new GenotypeMock(x, f));
     }
 };
 
 TEST_FIXTURE(GenotypeTest, getFenotype)
 {
     std::vector<double> fenotype = gen->getFenotype();
+
     CHECK_EQUAL(1, fenotype[0]);
     CHECK_EQUAL(2, fenotype[1]);
     CHECK_EQUAL(3, fenotype[2]);
@@ -34,14 +37,14 @@ TEST_FIXTURE(GenotypeTest, genotypeCanCopy)
 
 TEST_FIXTURE(GenotypeTest, childGenotypeCreation)
 {
-    Genotype parentA(f1,f2), parentB(f1,f2);
+    Genotype parentA(f), parentB(f);
     Genotype child(parentA, parentB);
 
-    CHECK(!isnan(child.rateByF1()));
-    CHECK(!isnan(child.rateByF2()));
+    CHECK(!isnan(child.rateByF(0)));
+    CHECK(!isnan(child.rateByF(1)));
 
-    CHECK(!isinf(child.rateByF1()));
-    CHECK(!isinf(child.rateByF2()));
+    CHECK(!isinf(child.rateByF(0)));
+    CHECK(!isinf(child.rateByF(1)));
 
 }
 
@@ -58,21 +61,21 @@ public:
 
 TEST_FIXTURE(GenotypeWithFValuesTest, initialExpressionsCorectness)
 {
-    CHECK_EQUAL(f1Value, gen->rateByF1());
-    CHECK_EQUAL(f2Value, gen->rateByF2());
+    CHECK_EQUAL(f1Value, gen->rateByF(0));
+    CHECK_EQUAL(f2Value, gen->rateByF(1));
 }
 
 TEST_FIXTURE(GenotypeWithFValuesTest, genotypeIsConstantAfterReparse)
 {
-    f1.parse("x1^2+x2^2+x3^2+x4^2+x5^2");
-    f2.parse("sqrt(x1-x2-x3-x4-x5)");
-    CHECK_EQUAL(f1Value, gen->rateByF1());
-    CHECK_EQUAL(f2Value, gen->rateByF2());
+    f[0].parse("x1^2+x2^2+x3^2+x4^2+x5^2");
+    f[1].parse("sqrt(x1-x2-x3-x4-x5)");
+    CHECK_EQUAL(f1Value, gen->rateByF(0));
+    CHECK_EQUAL(f2Value, gen->rateByF(1));
 }
 
 TEST_FIXTURE(GenotypeWithFValuesTest, genotypeIsConstantAfterChangingX)
 {
-    f1.at("x1") = f2.at("x5") = 20;
-    CHECK_EQUAL(f1Value, gen->rateByF1());
-    CHECK_EQUAL(f2Value, gen->rateByF2());
+    f[0].at("x1") = f[1].at("x5") = 20;
+    CHECK_EQUAL(f1Value, gen->rateByF(0));
+    CHECK_EQUAL(f2Value, gen->rateByF(1));
 }

@@ -6,10 +6,10 @@
 class GenotypeMock : public Genotype
 {
 public:
-    GenotypeMock(std::vector<double> x, Expression& f1, Expression& f2)
-        : Genotype(f1, f2)
+    GenotypeMock(std::vector<double> x, GoalFunctions& f)
+        : Genotype(f)
     {
-        getFValues(f1, f2, x);
+        getFValues(f[0], f[1], x);
     }
     virtual ~GenotypeMock() {}
 };

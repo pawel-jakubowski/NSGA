@@ -7,12 +7,11 @@ class Subject
 {
 public:
     Subject(const Genotype& newGen);
-    Subject(Expression &f1, Expression &f2);
+    Subject(GoalFunctions& f);
     Subject(const Subject& parentA, const Subject& parentB);
     virtual ~Subject() {}
 
-    double rateByF1() const;
-    double rateByF2() const;
+    const double& rateByF(const unsigned& function) const;
     const unsigned& getRank() const;
     const double& getDistance() const;
     void setRank(const unsigned& newRank);
@@ -27,20 +26,16 @@ protected:
     double crowdingDistance;
 };
 
-struct compareByF1
+class compareByF
 {
-    inline bool operator() (const Subject& subject1, const Subject& subject2)
+public:
+    compareByF(const unsigned& function) : functionId(function) {}
+    inline bool operator() (const Subject* subject1, const Subject* subject2)
     {
-        return (subject1.rateByF1() < subject2.rateByF1());
+        return (subject1->rateByF(functionId) < subject2->rateByF(functionId));
     }
-};
-
-struct compareByF2
-{
-    inline bool operator() (const Subject& subject1, const Subject& subject2)
-    {
-        return (subject1.rateByF2() < subject2.rateByF2());
-    }
+private:
+    unsigned functionId;
 };
 
 #endif // SUBJECT_H

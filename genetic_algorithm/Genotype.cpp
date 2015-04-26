@@ -2,25 +2,29 @@
 #include <CustomAssertion.h>
 #include <random>
 
-Genotype::Genotype(Expression& f1, Expression& f2) : f1Value(0), f2Value(0)
+Genotype::Genotype(GoalFunctions& newf)
+    : f(&newf)
+    , fValue(2,0)
 {
-    assert(f1.variablesCount() == f2.variablesCount());
+    assert(f->at(0).variablesCount() == f->at(1).variablesCount());
 
-    x.resize(f1.variablesCount());
+    x.resize(f->at(0).variablesCount());
     double LB = -5;
     double UB = 5;
     fillWithRandomVariables(x, LB, UB);
-    getFValues(f1, f2, x);
-
+    getFValues(f->at(0), f->at(1), x);
 }
 
 Genotype::Genotype(const Genotype &genA, const Genotype &genB)
+    : f(genA.f)
+    , fValue(2,0)
 {
     std::vector<double> fenotypeA = genA.getFenotype();
     std::vector<double> fenotypeB = genB.getFenotype();
 
     assert(fenotypeA.size() == fenotypeB.size());
     x.resize(fenotypeA.size());
+
     for(unsigned i = 0; i < fenotypeA.size(); ++i)
     {
         if(fenotypeA[i] < fenotypeB[i])
@@ -29,6 +33,7 @@ Genotype::Genotype(const Genotype &genA, const Genotype &genB)
             x[i] = Genotype::generateRandom(fenotypeB[i], fenotypeA[i]);
     }
     mutate();
+    getFValues(f->at(0), f->at(1), x);
 }
 
 void Genotype::mutate()
@@ -38,14 +43,10 @@ void Genotype::mutate()
     }
 }
 
-double Genotype::rateByF1() const
+const double& Genotype::rateByF(const unsigned& function) const
 {
-    return f1Value;
-}
-
-double Genotype::rateByF2() const
-{
-    return f2Value;
+    assert(function < fValue.size());
+    return fValue[function];
 }
 
 std::vector<double> Genotype::getFenotype() const
@@ -81,6 +82,6 @@ void Genotype::getFValues(Expression& f1, Expression& f2, std::vector<double>& v
     int i = -1;
     for(auto& key : f1.getAllVariableKeys())
         f1.at(key) = f2.at(key) = x[++i];
-    f1Value = f1.value();
-    f2Value = f2.value();
+    fValue[0] = f1.value();
+    fValue[1] = f2.value();
 }

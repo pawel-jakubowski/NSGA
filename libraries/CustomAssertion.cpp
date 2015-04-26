@@ -2,12 +2,10 @@
 
 #ifdef UT
 #pragma message("UT defined")
+#include <unittest++/UnitTest++.h>
 
-unsigned AssertSpy::failedCount = 0;
-
-void assert(bool expression)
+void _assert(const char *msg, const char *file, int line)
 {
-    if(!expression)
-        AssertSpy::failedCount++;
+    throw UnitTest::AssertException(msg,file,line);
 }
 #endif

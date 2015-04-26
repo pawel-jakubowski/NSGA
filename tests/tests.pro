@@ -18,6 +18,8 @@ SOURCES += main.cpp \
     genetic_algorithm/TestPopulation.cpp \
     ../math/Expression.cpp \
     math/TestExpression.cpp \
+    ../math/GoalFunctions.cpp \
+    math/TestGoalFunctions.cpp \
     ../libraries/CustomAssertion.cpp
 
 HEADERS += \
@@ -29,7 +31,8 @@ HEADERS += \
     ../libraries/exprtk.hpp \
     ../libraries/CustomAssertion.h \
     genetic_algorithm/GenotypeMock.h \
-    genetic_algorithm/GenerationMock.h
+    genetic_algorithm/GenerationMock.h \
+    ../math/GoalFunctions.h
 
 # add new folders here
 INCLUDEPATH += genetic_algorithm/

@@ -4,17 +4,23 @@
 #include <Subject.h>
 #include <vector>
 
-typedef std::vector<std::vector<Subject>> Fronts;
+typedef std::vector<Subject*> Front;
+typedef std::vector<Front> Fronts;
 
 class Generation
 {
 public:
-    Generation(unsigned subjectsCount, Expression& newf1, Expression& newf2);
+    Generation(unsigned subjectsCount, GoalFunctions& newf);
+    Generation(std::vector<Subject> newSubjects, GoalFunctions &newf);
     Generation produceNextGeneration();
     unsigned size() const;
+    void updateMinMax(const Subject &subject, const unsigned &goalFunctionIndex);
+    double calculateDistance(unsigned k, Front& front, const unsigned& goalFunctionIndex);
+    void addSubject(const Subject &subject);
 protected:
-    Expression* f1;
-    Expression* f2;
+    GoalFunctions* f;
+    std::vector<double> fMax;
+    std::vector<double> fMin;
     std::vector<Subject> subjects;
 
     std::vector<std::list<unsigned>> dominatedSubjects;
@@ -30,6 +36,7 @@ protected:
     void fillOtherFronts();
 
     void calculateCrowdingDistances();
+    void calculateDistancesForFront(Front& front);
 };
 
 #endif // GENERATION_H

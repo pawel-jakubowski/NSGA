@@ -9,13 +9,12 @@
 class SubjectTest
 {
 public:
-    Expression f1, f2;
+    GoalFunctions f;
     Subject individual;
 
     SubjectTest()
-        : f1(5)
-        , f2(5)
-        , individual(f1, f2)
+        : f(2,5)
+        , individual(f)
     {
     }
 };
@@ -27,7 +26,7 @@ TEST_FIXTURE(SubjectTest, subjectCanCopy)
 
 TEST_FIXTURE(SubjectTest, childSubjectCreation)
 {
-    Subject parentA(f1, f2), parentB(f1, f2);
+    Subject parentA(f), parentB(f);
     Subject child(parentA, parentB);
 }
 
@@ -92,8 +91,8 @@ public:
 
     SubjectDominationTest() : x{1,1,0,0,0}
     {
-        f1.parse("x1-x2");
-        f2.parse("x1+x2");
+        f[0].parse("x1-x2");
+        f[1].parse("x1+x2");
         std::vector<double> x1{1,0.5,0,1,-1};
         std::vector<double> x2{1,1.5,0,5,-5};
         std::vector<std::shared_ptr<Subject>> subjects(5);
@@ -102,7 +101,7 @@ public:
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new GenotypeMock(x,f1,f2));
+            gen.reset(new GenotypeMock(x,f));
             subjects[i].reset(new Subject(*gen));
         }
         A = subjects[0];
@@ -121,20 +120,20 @@ TEST_FIXTURE(SubjectDominationTest, properSubjectsCreation)
     CHECK(D.get() != NULL);
     CHECK(E.get() != NULL);
 
-    CHECK_EQUAL(0, A->rateByF1());
-    CHECK_EQUAL(2, A->rateByF2());
+    CHECK_EQUAL(0, A->rateByF(0));
+    CHECK_EQUAL(2, A->rateByF(1));
 
-    CHECK_EQUAL(-1, B->rateByF1());
-    CHECK_EQUAL(2, B->rateByF2());
+    CHECK_EQUAL(-1, B->rateByF(0));
+    CHECK_EQUAL(2, B->rateByF(1));
 
-    CHECK_EQUAL(0, C->rateByF1());
-    CHECK_EQUAL(0, C->rateByF2());
+    CHECK_EQUAL(0, C->rateByF(0));
+    CHECK_EQUAL(0, C->rateByF(1));
 
-    CHECK_EQUAL(-4, D->rateByF1());
-    CHECK_EQUAL(6, D->rateByF2());
+    CHECK_EQUAL(-4, D->rateByF(0));
+    CHECK_EQUAL(6, D->rateByF(1));
 
-    CHECK_EQUAL(4, E->rateByF1());
-    CHECK_EQUAL(-6, E->rateByF2());
+    CHECK_EQUAL(4, E->rateByF(0));
+    CHECK_EQUAL(-6, E->rateByF(1));
 }
 
 TEST_FIXTURE(SubjectDominationTest, domination)

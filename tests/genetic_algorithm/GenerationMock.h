@@ -6,15 +6,14 @@
 class GenerationMock : public Generation
 {
 public:
-    GenerationMock(unsigned& subjectsCount, Expression& newf1, Expression& newf2)
-        : Generation(subjectsCount, newf1, newf2)
+    GenerationMock(unsigned& subjectsCount, GoalFunctions& f)
+        : Generation(subjectsCount, f)
     {
     }
 
-    GenerationMock(std::vector<Subject> newSubjects, Expression& newf1, Expression& newf2)
-        : Generation(newSubjects.size(), newf1, newf2)
+    GenerationMock(std::vector<Subject> subjects, GoalFunctions& f)
+        : Generation(subjects, f)
     {
-        subjects = newSubjects;
     }
 
     const std::vector<Subject>& getSubjects()

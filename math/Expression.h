@@ -1,5 +1,5 @@
-#ifndef EXPRESSIONPARSER_H
-#define EXPRESSIONPARSER_H
+#ifndef EXPRESSION_H
+#define EXPRESSION_H
 
 #include <exprtk.hpp>
 #include <string>
@@ -31,4 +31,4 @@ private:
     exprtk::parser<double> parser;
 };
 
-#endif // EXPRESSIONPARSER_H
+#endif // EXPRESSION_H
