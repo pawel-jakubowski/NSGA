@@ -62,7 +62,3 @@ bool Subject::operator<(const Subject &r)
         return nondominationRank < r.nondominationRank;
 }
 
-bool Subject::operator==(const Subject &r, const Subject &l)
-{
-
-}

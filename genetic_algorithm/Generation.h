@@ -3,6 +3,7 @@
 
 #include <Subject.h>
 #include <vector>
+#include <RandomGenerator.h>
 
 typedef std::vector<Subject*> Front;
 typedef std::vector<Front> Fronts;

@@ -19,7 +19,9 @@ SOURCES += main.cpp \
     ../math/Expression.cpp \
     math/TestExpression.cpp \
     ../math/GoalFunctions.cpp \
-    math/TestGoalFunctions.cpp
+    math/TestGoalFunctions.cpp \
+    math/TestRandomGenerator.cpp \
+    ../math/RandomGenerator.cpp
 
 HEADERS += \
     ../genetic_algorithm/Genotype.h \
@@ -31,7 +33,8 @@ HEADERS += \
     ../libraries/CustomAssertion.h \
     genetic_algorithm/GenotypeMock.h \
     genetic_algorithm/GenerationMock.h \
-    ../math/GoalFunctions.h
+    ../math/GoalFunctions.h \
+    ../math/RandomGenerator.h
 
 # add new folders here
 INCLUDEPATH += genetic_algorithm/

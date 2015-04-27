@@ -2,6 +2,7 @@
 #include <CustomAssertion.h>
 #include <random>
 
+
 Genotype::Genotype(GoalFunctions& newf)
     : f(&newf)
     , fValue(2,0)
@@ -28,9 +29,9 @@ Genotype::Genotype(const Genotype &genA, const Genotype &genB)
     for(unsigned i = 0; i < fenotypeA.size(); ++i)
     {
         if(fenotypeA[i] < fenotypeB[i])
-            x[i] = Genotype::generateRandom(fenotypeA[i], fenotypeB[i]);
+            x[i] = generator.rand(fenotypeA[i], fenotypeB[i]);
         else
-            x[i] = Genotype::generateRandom(fenotypeB[i], fenotypeA[i]);
+            x[i] = generator.rand(fenotypeB[i], fenotypeA[i]);
     }
     mutate();
     getFValues(f->at(0), f->at(1), x);
@@ -39,7 +40,7 @@ Genotype::Genotype(const Genotype &genA, const Genotype &genB)
 void Genotype::mutate()
 {   for(auto& xElem : x)
     {
-        xElem += generateRandomN(0,1);
+        xElem += generator.randn(0,1);
     }
 }
 
@@ -54,26 +55,10 @@ std::vector<double> Genotype::getFenotype() const
     return x;
 }
 
-double Genotype::generateRandom(double lowerBound, double upperBound)
-{
-    std::uniform_real_distribution<double> dist(lowerBound, upperBound);
-    static std::random_device seed;
-    static std::mt19937 randomNumberGenerator(seed());
-    return dist(randomNumberGenerator);
-}
-
-double Genotype::generateRandomN(double center, double sigma)
-{
-    std::normal_distribution<double> dist(center, sigma);
-    static std::random_device seed;
-    static std::mt19937 randomNumberGenerator(seed());
-    return dist(randomNumberGenerator);
-}
-
 void Genotype::fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound)
 {
     for(auto& x : randomX)
-        x = generateRandom(lowerBound, upperBound);
+        x = generator.rand(lowerBound, upperBound);
 }
 
 void Genotype::getFValues(Expression& f1, Expression& f2, std::vector<double>& variables)

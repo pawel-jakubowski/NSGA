@@ -67,25 +67,56 @@ void Generation::selection(unsigned)
 {
 }
 
-//void Generation::pickParent(unsigned)
-//{
-//    return parent;
-//}
-
 void Generation::reproduction(unsigned subjectsCount)
 {
-    do
-    {
-        Subject parent1=subjects[rand()%subjectsCount];
-    }while(std::find(usedParents.begin(), usedParents.end(), parent1) != usedParents.end());
-    do
-    {
-        Subject parent2=subjects[rand()%subjectsCount];
-    }while(parent1 == parent2 && (std::find(usedParents.begin(), usedParents.end(), parent2) != usedParents.end()));
+    RandomGenerator generator;
 
-    offspring.push(Subject(parent1,parent2));
-    usedParents.push(parent1);
-    usedParents.push(parent2);
+    const int matingSize = 30;
+    const int tournamentSize = 5;
+    int contestant;
+    Subject* bestContestant;
+
+    std::vector<Subject*> matingPool;
+    std::vector<Subject*> tournamentPool;
+    std::vector<bool> usedSubjects(subjects.size(),false);
+
+
+    while(matingPool.size() < matingSize)
+    {
+        tournamentPool.clear();
+        usedSubjects.assign(subjects.size(),false);
+        while(tournamentPool.size() < tournamentSize)
+        {
+            contestant = generator.rand(0,subjects.size());
+            if(!usedSubjects[contestant])
+            {
+                tournamentPool.push_back(&subjects[contestant]);
+                usedSubjects[contestant] = true;
+            }
+        }
+
+        bestContestant = tournamentPool[0];
+
+        for(auto& subject:tournamentPool)
+        {
+            if(*subject < *bestContestant)
+            {
+                bestContestant = subject;
+            }
+        }
+        matingPool.push_back(bestContestant);
+    }
+
+    int parentA = -1;
+    int parentB = -1;
+    std::vector<Subject> offspring;
+    while(offspring.size() < subjectsCount)
+    {
+        parentA = generator.rand(0,matingPool.size());
+        while(parentA == parentB)
+            parentB = generator.rand(0,matingPool.size());
+        offspring.push_back(Subject(*matingPool[parentA],*matingPool[parentB]));
+    }
 }
 
 const Fronts& Generation::nonDominatedSort()
