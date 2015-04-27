@@ -19,8 +19,7 @@ SOURCES += main.cpp \
     ../math/Expression.cpp \
     math/TestExpression.cpp \
     ../math/GoalFunctions.cpp \
-    math/TestGoalFunctions.cpp \
-    ../libraries/CustomAssertion.cpp
+    math/TestGoalFunctions.cpp
 
 HEADERS += \
     ../genetic_algorithm/Genotype.h \

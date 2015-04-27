@@ -30,7 +30,7 @@ Generation Generation::produceNextGeneration()
 {
     const unsigned subjectsCount = subjects.size();
 //    std::vector<Subjects> offsprings = createOffsprings();
-//    subjects.insert(subjects.begin(), offsprings.begin(), offsprings.end());
+//    subjects.insert(subjects.end(), offsprings.begin(), offsprings.end());
     nonDominatedSort();
     assert(fronts.size() > 0);
 

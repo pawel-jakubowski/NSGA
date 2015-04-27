@@ -51,6 +51,11 @@ double Expression::value()
     return expression.value();
 }
 
+bool Expression::isFeasible() const
+{
+    return expression;
+}
+
 double& Expression::operator()(const std::string& key)
 {
     return at(key);

@@ -14,8 +14,6 @@ public:
     Generation(std::vector<Subject> newSubjects, GoalFunctions &newf);
     Generation produceNextGeneration();
     unsigned size() const;
-    void updateMinMax(const Subject &subject, const unsigned &goalFunctionIndex);
-    double calculateDistance(unsigned k, Front& front, const unsigned& goalFunctionIndex);
     void addSubject(const Subject &subject);
 protected:
     GoalFunctions* f;
@@ -31,12 +29,14 @@ protected:
 
     const Fronts& nonDominatedSort();
     void checkDominations(const unsigned& p, const unsigned& q);
+    void updateMinMax(const Subject &subject, const unsigned &goalFunctionIndex);
     void addSubjectToFront(const unsigned& frontNumber, const unsigned& subjectIndex);
     void createFirstFront();
     void fillOtherFronts();
 
     void calculateCrowdingDistances();
     void calculateDistancesForFront(Front& front);
+    double calculateDistance(unsigned k, Front& front, const unsigned& goalFunctionIndex);
 };
 
 #endif // GENERATION_H

@@ -44,6 +44,34 @@ TEST_FIXTURE(ExpressionTest, getVariablesKeys)
     }
 }
 
+TEST_FIXTURE(ExpressionTest, inequality)
+{
+    expr.parse("x1+x2>0");
+    CHECK(expr.isFeasible());
+    expr.parse("x1+x2<0");
+    CHECK(!expr.isFeasible());
+
+    expr.parse("x1-x2<0");
+    CHECK(expr.isFeasible());
+    expr.parse("x1-x2>0");
+    CHECK(!expr.isFeasible());
+
+    expr.parse("x1>x1");
+    CHECK(!expr.isFeasible());
+    expr.parse("x1<x1");
+    CHECK(!expr.isFeasible());
+
+    expr.parse("x1>=x1");
+    CHECK(expr.isFeasible());
+    expr.parse("x1<=x1");
+    CHECK(expr.isFeasible());
+
+    expr.parse("x1==x1");
+    CHECK(expr.isFeasible());
+    expr.parse("x1!=x1");
+    CHECK(!expr.isFeasible());
+}
+
 class ParsedExpressionTest : public ExpressionTest
 {
 public:
