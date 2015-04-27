@@ -20,6 +20,8 @@ public:
     bool isDominatedBy(const Subject& s);
     // Crowded distance operator
     bool operator<(const Subject& r);
+    bool operator==(const Subject& r,const Subject& l);
+    Genotype getGen();
 protected:
     Genotype gen;
     unsigned nondominationRank;

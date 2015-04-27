@@ -24,6 +24,7 @@ protected:
     double generateRandomN(double center, double sigma);
     void fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound);
     void getFValues(Expression& f1, Expression& f2, std::vector<double>& variables);
+
 };
 
 #endif // GENOTYPE_H

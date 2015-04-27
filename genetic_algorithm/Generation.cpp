@@ -67,6 +67,27 @@ void Generation::selection(unsigned)
 {
 }
 
+//void Generation::pickParent(unsigned)
+//{
+//    return parent;
+//}
+
+void Generation::reproduction(unsigned subjectsCount)
+{
+    do
+    {
+        Subject parent1=subjects[rand()%subjectsCount];
+    }while(std::find(usedParents.begin(), usedParents.end(), parent1) != usedParents.end());
+    do
+    {
+        Subject parent2=subjects[rand()%subjectsCount];
+    }while(parent1 == parent2 && (std::find(usedParents.begin(), usedParents.end(), parent2) != usedParents.end()));
+
+    offspring.push(Subject(parent1,parent2));
+    usedParents.push(parent1);
+    usedParents.push(parent2);
+}
+
 const Fronts& Generation::nonDominatedSort()
 {
     fronts.clear();

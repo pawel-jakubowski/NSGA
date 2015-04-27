@@ -36,6 +36,7 @@ const double &Subject::getDistance() const
     return crowdingDistance;
 }
 
+
 void Subject::setRank(const unsigned &newRank)
 {
     nondominationRank = newRank;
@@ -59,4 +60,9 @@ bool Subject::operator<(const Subject &r)
         return crowdingDistance > r.crowdingDistance;
     else
         return nondominationRank < r.nondominationRank;
+}
+
+bool Subject::operator==(const Subject &r, const Subject &l)
+{
+
 }

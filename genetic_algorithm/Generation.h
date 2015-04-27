@@ -37,6 +37,7 @@ protected:
     void calculateCrowdingDistances();
     void calculateDistancesForFront(Front& front);
     double calculateDistance(unsigned k, Front& front, const unsigned& goalFunctionIndex);
+    void reproduction (unsigned subjectsCount);
 };
 
 #endif // GENERATION_H
