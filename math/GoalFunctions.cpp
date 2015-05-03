@@ -4,6 +4,7 @@
 GoalFunctions::GoalFunctions(const unsigned &numberOfGoalFunctions, const unsigned &numberOfVariables)
     : goalFunctions(numberOfGoalFunctions, Expression(numberOfVariables))
 {
+    assert(numberOfGoalFunctions > 0);
 }
 
 GoalFunctions::GoalFunctions(std::initializer_list<Expression> f)

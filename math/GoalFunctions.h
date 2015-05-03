@@ -10,7 +10,7 @@ public:
     GoalFunctions(std::initializer_list<Expression> f);
 
     Expression& operator[](const unsigned& id);
-    Expression &at(const unsigned& id);
+    Expression& at(const unsigned& id);
     unsigned size() const;
 private:
     std::vector<Expression> goalFunctions;

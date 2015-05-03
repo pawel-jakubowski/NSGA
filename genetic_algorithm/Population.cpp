@@ -1,5 +1,6 @@
 #include "Population.h"
 #include <CustomAssertion.h>
+#include <iostream>
 
 Population::Population(unsigned firstGenerationSize, GoalFunctions& newf)
     : f(&newf)
@@ -12,7 +13,10 @@ void Population::generateGenerations(unsigned generationsCount)
     assert(generations.size() >= 1);
     generations.resize(1, Generation(sizeOfGeneration(1), *f));
     for (unsigned i = 0; i < generationsCount - 1; ++i)
+    {
+        std::cout << "generation " << i << std::flush << std::endl;
         generations.push_back(generations[i].produceNextGeneration());
+    }
     generations.shrink_to_fit();
 }
 

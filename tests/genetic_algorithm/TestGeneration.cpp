@@ -1,6 +1,6 @@
 #include <unittest++/UnitTest++.h>
 #include <GenerationMock.h>
-#include <GenotypeMock.h>
+#include <FenotypeMock.h>
 #include <CustomAssertion.h>
 
 class GenerationTest
@@ -25,8 +25,8 @@ TEST_FIXTURE(GenerationTest, generationCreation)
 
 TEST_FIXTURE(GenerationTest, produceNextGeneration)
 {
-    Generation newGeneration = generation.produceNextGeneration();
-    CHECK_EQUAL(generationSize, newGeneration.size());
+//    Generation newGeneration = generation.produceNextGeneration();
+//    CHECK_EQUAL(generationSize, newGeneration.size());
 }
 
 class GenerationWithSubjects : public GenerationTest
@@ -62,12 +62,12 @@ public:
         };
 
         subjects.reserve(x1.size());
-        std::unique_ptr<GenotypeMock> gen;
+        std::unique_ptr<FenotypeMock> gen;
         for(unsigned i = 0; i < x1.size(); ++i)
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new GenotypeMock(x,f));
+            gen.reset(new FenotypeMock(x,f));
             subjects.emplace_back(*gen);
         }
     }
@@ -108,6 +108,16 @@ TEST_FIXTURE(GenerationWithSubjects, distanceCalculationWithNoFronts)
     GenerationMock generation = GenerationMock(generationSize, f);
 
     CHECK_ASSERT(generation.calculateCrowdingDistances());
+}
+
+TEST_FIXTURE(GenerationWithSubjects, reproduction)
+{
+    std::vector<Subject> offsprings = generation.reproduction(generation.size());
+    CHECK_EQUAL(generation.size(), offsprings.size());
+        for(auto& offspring : offsprings)
+            for(auto& subject : subjects)
+                for(unsigned m = 0; m < f.size(); ++m)
+                    CHECK(offspring.rateByF(m) != subject.rateByF(m));
 }
 
 class GenerationWithFronts : public GenerationWithSubjects

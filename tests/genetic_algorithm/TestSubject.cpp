@@ -1,6 +1,6 @@
 #include <unittest++/UnitTest++.h>
 #include <Subject.h>
-#include <GenotypeMock.h>
+#include <FenotypeMock.h>
 #include <memory>
 #include <limits>
 
@@ -28,15 +28,6 @@ TEST_FIXTURE(SubjectTest, childSubjectCreation)
 {
     Subject parentA(f), parentB(f);
     Subject child(parentA, parentB);
-}
-
-TEST_FIXTURE(SubjectTest, setAndGetRank)
-{
-    CHECK_EQUAL(0, individual.getRank());
-    individual.setRank(1);
-    CHECK_EQUAL(1, individual.getRank());
-    individual.setRank(126);
-    CHECK_EQUAL(126, individual.getRank());
 }
 
 TEST_FIXTURE(SubjectTest, setAndGetDistance)
@@ -87,7 +78,7 @@ public:
     std::shared_ptr<Subject> C;
     std::shared_ptr<Subject> D;
     std::shared_ptr<Subject> E;
-    std::unique_ptr<GenotypeMock> gen;
+    std::unique_ptr<FenotypeMock> gen;
 
     SubjectDominationTest() : x{1,1,0,0,0}
     {
@@ -101,7 +92,7 @@ public:
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new GenotypeMock(x,f));
+            gen.reset(new FenotypeMock(x,f));
             subjects[i].reset(new Subject(*gen));
         }
         A = subjects[0];

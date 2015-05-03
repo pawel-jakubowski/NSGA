@@ -8,8 +8,6 @@ QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp \
     TestExample.cpp \
-    ../genetic_algorithm/Genotype.cpp \
-    genetic_algorithm/TestGenotype.cpp \
     ../genetic_algorithm/Subject.cpp \
     genetic_algorithm/TestSubject.cpp \
     ../genetic_algorithm/Generation.cpp \
@@ -21,20 +19,22 @@ SOURCES += main.cpp \
     ../math/GoalFunctions.cpp \
     math/TestGoalFunctions.cpp \
     math/TestRandomGenerator.cpp \
-    ../math/RandomGenerator.cpp
+    ../math/RandomGenerator.cpp \
+    ../genetic_algorithm/Fenotype.cpp \
+    genetic_algorithm/TestFenotype.cpp
 
 HEADERS += \
-    ../genetic_algorithm/Genotype.h \
     ../genetic_algorithm/Subject.h \
     ../genetic_algorithm/Generation.h \
     ../genetic_algorithm/Population.h \
     ../math/Expression.h \
     ../libraries/exprtk.hpp \
     ../libraries/CustomAssertion.h \
-    genetic_algorithm/GenotypeMock.h \
     genetic_algorithm/GenerationMock.h \
     ../math/GoalFunctions.h \
-    ../math/RandomGenerator.h
+    ../math/RandomGenerator.h \
+    ../genetic_algorithm/Fenotype.h \
+    genetic_algorithm/FenotypeMock.h
 
 # add new folders here
 INCLUDEPATH += genetic_algorithm/

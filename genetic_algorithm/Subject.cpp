@@ -1,23 +1,23 @@
 #include "Subject.h"
 
-Subject::Subject(const Genotype &newGen)
-    : gen(newGen)
-    , nondominationRank(0)
-    , crowdingDistance(0)
+Subject::Subject(const Fenotype &newGen)
+    : distance(0)
+    , rank(0)
+    , gen(newGen)
 {
 }
 
 Subject::Subject(GoalFunctions& f)
-    : gen(f)
-    , nondominationRank(0)
-    , crowdingDistance(0)
+    : distance(0)
+    , rank(0)
+    , gen(f, -5, 5)
 {
 }
 
 Subject::Subject(const Subject &parentA, const Subject &parentB)
-    : gen(parentA.gen, parentB.gen)
-    , nondominationRank(0)
-    , crowdingDistance(0)
+    : distance(0)
+    , rank(0)
+    , gen(parentA.gen, parentB.gen)
 {
 }
 
@@ -28,26 +28,34 @@ const double& Subject::rateByF(const unsigned& function) const
 
 const unsigned &Subject::getRank() const
 {
-    return nondominationRank;
+    return rank;
 }
 
 const double &Subject::getDistance() const
 {
-    return crowdingDistance;
+    return distance;
 }
 
 
 void Subject::setRank(const unsigned &newRank)
 {
-    nondominationRank = newRank;
+    rank = newRank;
 }
 
 void Subject::setDistance(const double &newDistance)
 {
-    crowdingDistance = newDistance;
+    distance = newDistance;
 }
 
-bool Subject::isDominatedBy(const Subject &s)
+void Subject::checkDomination(Subject& q)
+{
+    if(q.isDominatedBy(*this))
+        dominatedSubjects.emplace_back(&q);
+    else if (isDominatedBy(q))
+        dominantsCount += 1;
+}
+
+bool Subject::isDominatedBy(const Subject &s) const
 {
     bool isDominatedWithRespectToF1 = (s.rateByF(0) < rateByF(0)) && (s.rateByF(1) <= rateByF(1));
     bool isDominatedWithRespectToF2 = (s.rateByF(1) < rateByF(1)) && (s.rateByF(0) <= rateByF(0));
@@ -56,9 +64,9 @@ bool Subject::isDominatedBy(const Subject &s)
 
 bool Subject::operator<(const Subject &r)
 {
-    if(nondominationRank == r.nondominationRank)
-        return crowdingDistance > r.crowdingDistance;
+    if(rank == r.rank)
+        return distance > r.distance;
     else
-        return nondominationRank < r.nondominationRank;
+        return rank < r.rank;
 }
 
