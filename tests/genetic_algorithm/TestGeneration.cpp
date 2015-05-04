@@ -25,21 +25,23 @@ TEST_FIXTURE(GenerationTest, generationCreation)
 
 TEST_FIXTURE(GenerationTest, produceNextGeneration)
 {
-//    Generation newGeneration = generation.produceNextGeneration();
-//    CHECK_EQUAL(generationSize, newGeneration.size());
+    Generation newGeneration = generation.produceNextGeneration();
+    CHECK_EQUAL(generationSize, newGeneration.size());
 }
 
 class GenerationWithSubjects : public GenerationTest
 {
 public:
     std::vector<Subject> subjects;
+    std::vector<double> x1;
+    std::vector<double> x2;
 
     GenerationWithSubjects() : GenerationTest()
     {
         f[0].parse("x1-x2");
         f[1].parse("x1+x2");
 
-        std::vector<double> x{0,0,0,0,0};
+        std::vector<double> x{0,0};
         std::vector<double> x1 = {
             // Front 1
             0.5, 1, 0.5, 1, -1,
@@ -164,4 +166,16 @@ TEST_FIXTURE(GenerationWithFronts, crowdingDistanceAssignment)
     CHECK_CLOSE(inf, fronts[2][0]->getDistance(), 0.01);
 
     CHECK_CLOSE(inf, fronts[3][0]->getDistance(), 0.01);
+}
+
+TEST_FIXTURE(GenerationWithFronts, returnFirstFront)
+{
+    std::vector<std::vector<double>> firstFront = generation.getFirstFront();
+    CHECK_EQUAL(f.size(), firstFront.size());
+    CHECK_EQUAL(5, firstFront[0].size());
+    CHECK_EQUAL(5, firstFront[1].size());
+    // assume that first front is on begining of our subjects vector
+    for(unsigned i = 0; i < firstFront[0].size(); ++i)
+        for(unsigned j = 0; j < f.size(); ++j)
+            CHECK_EQUAL(subjects[i].rateByF(j), firstFront[j][i]);
 }

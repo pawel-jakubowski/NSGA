@@ -21,7 +21,9 @@ SOURCES += main.cpp \
     math/TestRandomGenerator.cpp \
     ../math/RandomGenerator.cpp \
     ../genetic_algorithm/Fenotype.cpp \
-    genetic_algorithm/TestFenotype.cpp
+    genetic_algorithm/TestFenotype.cpp \
+    ../genetic_algorithm/Nsga.cpp \
+    genetic_algorithm/TestNsga.cpp
 
 HEADERS += \
     ../genetic_algorithm/Subject.h \
@@ -34,11 +36,14 @@ HEADERS += \
     ../math/GoalFunctions.h \
     ../math/RandomGenerator.h \
     ../genetic_algorithm/Fenotype.h \
-    genetic_algorithm/FenotypeMock.h
+    genetic_algorithm/FenotypeMock.h \
+    ../interfaces/Core.h \
+    ../genetic_algorithm/Nsga.h
 
 # add new folders here
 INCLUDEPATH += genetic_algorithm/
 INCLUDEPATH += ../genetic_algorithm/
+INCLUDEPATH += ../interfaces/
 INCLUDEPATH += ../libraries/
 INCLUDEPATH += ../math/
 

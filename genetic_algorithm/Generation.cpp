@@ -77,6 +77,15 @@ std::vector<Subject> Generation::reproduction(unsigned subjectsCount)
     return createOffspringsFromPool(subjectsCount, matingPool);
 }
 
+std::vector<std::vector<double>> Generation::getFirstFront()
+{
+    std::vector<std::vector<double>> firstFront(f->size(), std::vector<double>(fronts[0].size()));
+    for(unsigned i = 0; i < fronts[0].size(); ++i)
+        for(unsigned j = 0; j < f->size(); ++j)
+            firstFront[j][i] = fronts[0][i]->rateByF(j);
+    return firstFront;
+}
+
 std::vector<Subject*> Generation::createMatingPool()
 {
     std::vector<Subject*> matingPool;

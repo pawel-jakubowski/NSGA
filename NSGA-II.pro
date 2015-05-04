@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     math/Expression.cpp \
     genetic_algorithm/Fenotype.cpp \
     math/GoalFunctions.cpp \
-    math/RandomGenerator.cpp
+    math/RandomGenerator.cpp \
+    genetic_algorithm/Nsga.cpp
 
 HEADERS += \
     interfaces/Gui.h \
@@ -42,7 +43,9 @@ HEADERS += \
     libraries/CustomAssertion.h \
     genetic_algorithm/Fenotype.h \
     math/GoalFunctions.h \
-    math/RandomGenerator.h
+    math/RandomGenerator.h \
+    interfaces/Core.h \
+    genetic_algorithm/Nsga.h
 
 # add new folders here
 INCLUDEPATH += interfaces/

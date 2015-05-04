@@ -18,6 +18,7 @@ public:
     unsigned size() const;
     void addSubject(const Subject &subject);
     std::vector<Subject> reproduction (unsigned subjectsCount);
+    std::vector<std::vector<double>> getFirstFront();
 protected:
     GoalFunctions* f;
     std::vector<double> fMax;

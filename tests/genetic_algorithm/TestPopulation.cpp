@@ -10,7 +10,7 @@ public:
     Population* population;
 
     PopulationTest()
-        : f(3,5)
+        : f(2,5)
     {
         f[0].parse("x1+x2");
         f[1].parse("x1-x2");
@@ -33,3 +33,4 @@ TEST_FIXTURE(PopulationTest, generateGenerations)
         CHECK_EQUAL(endGenerationsNumber, population->generationsCount());
     }
 }
+

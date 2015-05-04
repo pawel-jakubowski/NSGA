@@ -8,7 +8,7 @@ class Population
 public:
     Population(unsigned firstGenerationSize, GoalFunctions &newf);
 
-    void generateGenerations(unsigned generationsCount);
+    std::vector<std::vector<double>> generateGenerations(unsigned generationsCount);
     unsigned generationsCount();
     unsigned sizeOfGeneration(unsigned generationNumber);
 private:

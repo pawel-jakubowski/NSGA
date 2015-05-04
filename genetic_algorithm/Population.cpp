@@ -8,7 +8,7 @@ Population::Population(unsigned firstGenerationSize, GoalFunctions& newf)
 {
 }
 
-void Population::generateGenerations(unsigned generationsCount)
+std::vector<std::vector<double>> Population::generateGenerations(unsigned generationsCount)
 {
     assert(generations.size() >= 1);
     generations.resize(1, Generation(sizeOfGeneration(1), *f));
@@ -18,6 +18,8 @@ void Population::generateGenerations(unsigned generationsCount)
         generations.push_back(generations[i].produceNextGeneration());
     }
     generations.shrink_to_fit();
+
+    return generations[0].getFirstFront();
 }
 
 unsigned Population::generationsCount()
