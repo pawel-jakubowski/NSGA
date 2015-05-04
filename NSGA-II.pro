@@ -23,8 +23,10 @@ SOURCES += main.cpp \
     genetic_algorithm/Population.cpp \
     genetic_algorithm/Generation.cpp \
     genetic_algorithm/Subject.cpp \
-    genetic_algorithm/Genotype.cpp \
-    math/Expression.cpp
+    math/Expression.cpp \
+    genetic_algorithm/Fenotype.cpp \
+    math/GoalFunctions.cpp \
+    math/RandomGenerator.cpp
 
 HEADERS += \
     interfaces/Gui.h \
@@ -36,9 +38,11 @@ HEADERS += \
     genetic_algorithm/Population.h \
     genetic_algorithm/Generation.h \
     genetic_algorithm/Subject.h \
-    genetic_algorithm/Genotype.h \
     math/Expression.h \
-    libraries/CustomAssertion.h
+    libraries/CustomAssertion.h \
+    genetic_algorithm/Fenotype.h \
+    math/GoalFunctions.h \
+    math/RandomGenerator.h
 
 # add new folders here
 INCLUDEPATH += interfaces/
