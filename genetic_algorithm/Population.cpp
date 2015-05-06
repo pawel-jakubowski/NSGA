@@ -14,7 +14,7 @@ std::vector<std::vector<double>> Population::generateGenerations(unsigned genera
     generations.resize(1, Generation(sizeOfGeneration(1), *f));
     for (unsigned i = 0; i < generationsCount - 1; ++i)
     {
-        std::cout << "generation " << i << std::flush << std::endl;
+//        std::cout << "generation " << i << std::flush << std::endl;
         generations.push_back(generations[i].produceNextGeneration());
     }
     generations.shrink_to_fit();

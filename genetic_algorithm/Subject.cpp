@@ -47,11 +47,11 @@ void Subject::setDistance(const double &newDistance)
     distance = newDistance;
 }
 
-void Subject::checkDomination(Subject& q)
+void Subject::checkDomination(SubjectPtr q)
 {
-    if(q.isDominatedBy(*this))
-        dominatedSubjects.emplace_back(&q);
-    else if (isDominatedBy(q))
+    if(q->isDominatedBy(*this))
+        dominatedSubjects.emplace_back(q);
+    else if (isDominatedBy(*q))
         dominantsCount += 1;
 }
 
@@ -62,7 +62,7 @@ bool Subject::isDominatedBy(const Subject &s) const
     return isDominatedWithRespectToF1 || isDominatedWithRespectToF2;
 }
 
-bool Subject::operator<(const Subject &r)
+bool Subject::operator<(const Subject &r) const
 {
     if(rank == r.rank)
         return distance > r.distance;

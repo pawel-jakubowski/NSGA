@@ -6,14 +6,21 @@
 class GenerationTest
 {
 public:
-    GoalFunctions f;
+    struct ParsedGoalFunctions {
+        GoalFunctions f;
+        ParsedGoalFunctions() : f(2,2)
+        {
+            f[0].parse("x1-x2");
+            f[1].parse("x1+x2");
+        }
+    } parsed;
     unsigned generationSize;
-    Generation generation;
+    GenerationMock generation;
 
     GenerationTest()
-        : f(2,5)
+        : parsed()
         , generationSize(50)
-        , generation(generationSize, f)
+        , generation(generationSize, parsed.f)
     {
     }
 };
@@ -25,22 +32,28 @@ TEST_FIXTURE(GenerationTest, generationCreation)
 
 TEST_FIXTURE(GenerationTest, produceNextGeneration)
 {
-    Generation newGeneration = generation.produceNextGeneration();
+    GenerationMock newGeneration = generation.produceNextGeneration();
+    std::vector<std::vector<double>> originalFront = generation.getFirstFront();
+    std::vector<std::vector<double>> nextFront = newGeneration.getFirstFront();
+
     CHECK_EQUAL(generationSize, newGeneration.size());
+    CHECK_EQUAL(originalFront.size(), nextFront.size());
+
+    for(unsigned i = 0; i < nextFront[0].size(); ++i)
+        for(unsigned j = 0; j < originalFront[0].size(); ++j)
+            CHECK(nextFront[0][i] <= originalFront[0][j] ||
+                  nextFront[1][i] <= originalFront[1][j]);
 }
 
 class GenerationWithSubjects : public GenerationTest
 {
 public:
-    std::vector<Subject> subjects;
+    SubjectsContainer subjects;
     std::vector<double> x1;
     std::vector<double> x2;
 
     GenerationWithSubjects() : GenerationTest()
     {
-        f[0].parse("x1-x2");
-        f[1].parse("x1+x2");
-
         std::vector<double> x{0,0};
         std::vector<double> x1 = {
             // Front 1
@@ -69,8 +82,8 @@ public:
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new FenotypeMock(x,f));
-            subjects.emplace_back(*gen);
+            gen.reset(new FenotypeMock(x,parsed.f));
+            subjects.emplace_back(std::make_shared<Subject>(*gen));
         }
     }
 };
@@ -78,7 +91,7 @@ public:
 TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForEmptyGeneration)
 {
     generationSize = 0;
-    GenerationMock generation = GenerationMock(generationSize, f);
+    GenerationMock generation = GenerationMock(generationSize, parsed.f);
     Fronts fronts = generation.nonDominatedSort();
     CHECK_EQUAL(generationSize, generation.size());
     CHECK_EQUAL(0, fronts.size());
@@ -87,7 +100,7 @@ TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForEmptyGeneration)
 TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForGenerationWithOneSubject)
 {
     generationSize = 1;
-    GenerationMock generation = GenerationMock(generationSize, f);
+    GenerationMock generation = GenerationMock(generationSize, parsed.f);
     Fronts fronts = generation.nonDominatedSort();
     CHECK_EQUAL(generationSize, generation.size());
     CHECK_EQUAL(1, fronts.size());
@@ -95,7 +108,7 @@ TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForGenerationWithOneSubject
 
 TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortSimpleCase)
 {
-    GenerationMock generation = GenerationMock(subjects, f);
+    GenerationMock generation = GenerationMock(subjects, parsed.f);
     Fronts fronts = generation.nonDominatedSort();
     CHECK_EQUAL(subjects.size(), generation.size());
     CHECK_EQUAL(4, fronts.size());
@@ -107,19 +120,20 @@ TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortSimpleCase)
 
 TEST_FIXTURE(GenerationWithSubjects, distanceCalculationWithNoFronts)
 {
-    GenerationMock generation = GenerationMock(generationSize, f);
+    GenerationMock generation = GenerationMock(generationSize, parsed.f);
 
     CHECK_ASSERT(generation.calculateCrowdingDistances());
 }
 
 TEST_FIXTURE(GenerationWithSubjects, reproduction)
 {
-    std::vector<Subject> offsprings = generation.reproduction(generation.size());
+    GenerationMock generation = GenerationMock(subjects, parsed.f);
+    SubjectsContainer offsprings = generation.reproduction(generation.size());
     CHECK_EQUAL(generation.size(), offsprings.size());
         for(auto& offspring : offsprings)
             for(auto& subject : subjects)
-                for(unsigned m = 0; m < f.size(); ++m)
-                    CHECK(offspring.rateByF(m) != subject.rateByF(m));
+                for(unsigned m = 0; m < parsed.f.size(); ++m)
+                    CHECK(offspring->rateByF(m) != subject->rateByF(m));
 }
 
 class GenerationWithFronts : public GenerationWithSubjects
@@ -129,7 +143,7 @@ public:
     Fronts fronts;
 
     GenerationWithFronts()
-        : GenerationWithSubjects(), generation(subjects, f)
+        : GenerationWithSubjects(), generation(subjects, parsed.f)
     {
         fronts = generation.nonDominatedSort();
     }
@@ -143,7 +157,7 @@ TEST_FIXTURE(GenerationWithFronts, initialValues)
     CHECK_EQUAL(1, fronts[2].size());
     CHECK_EQUAL(1, fronts[3].size());
     for(auto& subject : generation.getSubjects())
-        CHECK_EQUAL(0, subject.getDistance());
+        CHECK_EQUAL(0, subject->getDistance());
 }
 
 TEST_FIXTURE(GenerationWithFronts, crowdingDistanceAssignment)
@@ -171,11 +185,11 @@ TEST_FIXTURE(GenerationWithFronts, crowdingDistanceAssignment)
 TEST_FIXTURE(GenerationWithFronts, returnFirstFront)
 {
     std::vector<std::vector<double>> firstFront = generation.getFirstFront();
-    CHECK_EQUAL(f.size(), firstFront.size());
+    CHECK_EQUAL(parsed.f.size(), firstFront.size());
     CHECK_EQUAL(5, firstFront[0].size());
     CHECK_EQUAL(5, firstFront[1].size());
     // assume that first front is on begining of our subjects vector
     for(unsigned i = 0; i < firstFront[0].size(); ++i)
-        for(unsigned j = 0; j < f.size(); ++j)
-            CHECK_EQUAL(subjects[i].rateByF(j), firstFront[j][i]);
+        for(unsigned j = 0; j < parsed.f.size(); ++j)
+            CHECK_EQUAL(subjects[i]->rateByF(j), firstFront[j][i]);
 }

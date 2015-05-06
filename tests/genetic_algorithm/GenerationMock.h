@@ -11,12 +11,17 @@ public:
     {
     }
 
-    GenerationMock(std::vector<Subject> subjects, GoalFunctions& f)
+    GenerationMock(SubjectsContainer subjects, GoalFunctions& f)
         : Generation(subjects, f)
     {
     }
 
-    const std::vector<Subject>& getSubjects()
+    GenerationMock(const Generation& other)
+        : Generation(other)
+    {
+    }
+
+    const SubjectsContainer& getSubjects()
     {
         return subjects;
     }
@@ -29,6 +34,7 @@ public:
     // Change function visibility for testing purposes
     using Generation::nonDominatedSort;
     using Generation::calculateCrowdingDistances;
+    using Generation::reproduction;
 };
 
 #endif // GENERATIONMOCK_H

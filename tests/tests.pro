@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     ../genetic_algorithm/Fenotype.cpp \
     genetic_algorithm/TestFenotype.cpp \
     ../genetic_algorithm/Nsga.cpp \
-    genetic_algorithm/TestNsga.cpp
+    genetic_algorithm/TestNsga.cpp \
+    ../genetic_algorithm/Front.cpp \
+    genetic_algorithm/TestFront.cpp
 
 HEADERS += \
     ../genetic_algorithm/Subject.h \
@@ -38,7 +40,8 @@ HEADERS += \
     ../genetic_algorithm/Fenotype.h \
     genetic_algorithm/FenotypeMock.h \
     ../interfaces/Core.h \
-    ../genetic_algorithm/Nsga.h
+    ../genetic_algorithm/Nsga.h \
+    ../genetic_algorithm/Front.h
 
 # add new folders here
 INCLUDEPATH += genetic_algorithm/

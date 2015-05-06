@@ -4,8 +4,6 @@
 #include <memory>
 #include <limits>
 
-#include <iostream>
-
 class SubjectTest
 {
 public:

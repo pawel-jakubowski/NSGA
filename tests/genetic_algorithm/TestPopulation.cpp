@@ -7,14 +7,14 @@ class PopulationTest
     GoalFunctions f;
 public:
     const unsigned subjectsCount = 50;
-    Population* population;
+    std::unique_ptr<Population> population;
 
     PopulationTest()
         : f(2,5)
     {
         f[0].parse("x1+x2");
         f[1].parse("x1-x2");
-        population = new Population(subjectsCount, f);
+        population.reset(new Population(subjectsCount, f));
     }
 };
 

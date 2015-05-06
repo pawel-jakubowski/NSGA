@@ -1,7 +1,7 @@
 #include "Fenotype.h"
 #include <CustomAssertion.h>
 #include <random>
-
+#include <iostream>
 
 Fenotype::Fenotype(GoalFunctions& newf, double genLowerBound, double genUpperBound)
     : f(&newf)

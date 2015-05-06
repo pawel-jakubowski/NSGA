@@ -4,6 +4,9 @@
 #include <Fenotype.h>
 #include <list>
 
+class Subject;
+typedef std::shared_ptr<Subject> SubjectPtr;
+
 class Subject
 {
 public:
@@ -13,9 +16,9 @@ public:
     virtual ~Subject() {}
 
     const double& rateByF(const unsigned& function) const;
-    void checkDomination(Subject &q);
+    void checkDomination(SubjectPtr q);
     bool isDominatedBy(const Subject& s) const;
-    bool operator<(const Subject& r); // Crowded distance operator
+    bool operator<(const Subject& r) const; // Crowded distance operator
 
     const unsigned& getRank() const;
     const double& getDistance() const;
@@ -23,7 +26,7 @@ public:
     void setDistance(const double& newDistance);
 
     int dominantsCount;
-    std::list<Subject*> dominatedSubjects;
+    std::list<SubjectPtr> dominatedSubjects;
 private:
     double distance;
     unsigned rank;
