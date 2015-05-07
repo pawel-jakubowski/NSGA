@@ -32,8 +32,6 @@ public:
     }
 
     // Change function visibility for testing purposes
-    using Generation::nonDominatedSort;
-    using Generation::calculateCrowdingDistances;
     using Generation::reproduction;
 };
 

@@ -51,7 +51,11 @@ void Front::calculateDistances(const std::vector<double> &fMin, const std::vecto
         subjects[subjects.size()-1]->setDistance(infinity);
 
         for(unsigned k = 1; k < subjects.size()-1; ++k)
+        {
+            if (m == 0)
+                subjects[k]->setDistance(0);
             subjects[k]->setDistance(calculateDistance(k, m, fMin[m], fMax[m]));
+        }
     }
 }
 

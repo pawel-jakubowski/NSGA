@@ -1,10 +1,8 @@
 #ifndef GENERATION_H
 #define GENERATION_H
 
-#include <Front.h>
+#include <Fronts.h>
 #include <vector>
-
-typedef std::vector<Front> Fronts;
 
 class Generation
 {
@@ -17,7 +15,6 @@ public:
     unsigned size() const;
     void addSubject(std::shared_ptr<Subject> subject);
     std::vector<std::vector<double>> getFirstFront();
-    void addSubjectToFront(const unsigned &frontNumber, SubjectPtr subject);
 protected:
     GoalFunctions* f;
     std::vector<double> fMax;
@@ -27,14 +24,6 @@ protected:
     Fronts fronts;
 
     Generation fitFrontsToNextGeneration(const unsigned subjectsCount);
-
-    const Fronts& nonDominatedSort();
-    void updateMinMax(const Subject &subject, const unsigned &goalFunctionIndex);
-    void createFirstFront();
-    void fillOtherFronts();
-
-    void calculateCrowdingDistances();
-
     SubjectsContainer reproduction (unsigned subjectsCount);
     SubjectsContainer createOffspringsFromPool(unsigned subjectsCount, SubjectsContainer matingPool);
     SubjectsContainer createMatingPool();

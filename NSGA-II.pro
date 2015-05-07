@@ -27,7 +27,9 @@ SOURCES += main.cpp \
     genetic_algorithm/Fenotype.cpp \
     math/GoalFunctions.cpp \
     math/RandomGenerator.cpp \
-    genetic_algorithm/Nsga.cpp
+    genetic_algorithm/Nsga.cpp \
+    genetic_algorithm/Front.cpp \
+    genetic_algorithm/Fronts.cpp
 
 HEADERS += \
     interfaces/Gui.h \
@@ -45,7 +47,9 @@ HEADERS += \
     math/GoalFunctions.h \
     math/RandomGenerator.h \
     interfaces/Core.h \
-    genetic_algorithm/Nsga.h
+    genetic_algorithm/Nsga.h \
+    genetic_algorithm/Front.h \
+    genetic_algorithm/Fronts.h
 
 # add new folders here
 INCLUDEPATH += interfaces/

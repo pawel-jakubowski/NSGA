@@ -88,43 +88,6 @@ public:
     }
 };
 
-TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForEmptyGeneration)
-{
-    generationSize = 0;
-    GenerationMock generation = GenerationMock(generationSize, parsed.f);
-    Fronts fronts = generation.nonDominatedSort();
-    CHECK_EQUAL(generationSize, generation.size());
-    CHECK_EQUAL(0, fronts.size());
-}
-
-TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortForGenerationWithOneSubject)
-{
-    generationSize = 1;
-    GenerationMock generation = GenerationMock(generationSize, parsed.f);
-    Fronts fronts = generation.nonDominatedSort();
-    CHECK_EQUAL(generationSize, generation.size());
-    CHECK_EQUAL(1, fronts.size());
-}
-
-TEST_FIXTURE(GenerationWithSubjects, nonDominatedSortSimpleCase)
-{
-    GenerationMock generation = GenerationMock(subjects, parsed.f);
-    Fronts fronts = generation.nonDominatedSort();
-    CHECK_EQUAL(subjects.size(), generation.size());
-    CHECK_EQUAL(4, fronts.size());
-    CHECK_EQUAL(5, fronts[0].size());
-    CHECK_EQUAL(3, fronts[1].size());
-    CHECK_EQUAL(1, fronts[2].size());
-    CHECK_EQUAL(1, fronts[3].size());
-}
-
-TEST_FIXTURE(GenerationWithSubjects, distanceCalculationWithNoFronts)
-{
-    GenerationMock generation = GenerationMock(generationSize, parsed.f);
-
-    CHECK_ASSERT(generation.calculateCrowdingDistances());
-}
-
 TEST_FIXTURE(GenerationWithSubjects, reproduction)
 {
     GenerationMock generation = GenerationMock(subjects, parsed.f);
@@ -140,47 +103,12 @@ class GenerationWithFronts : public GenerationWithSubjects
 {
 public:
     GenerationMock generation;
-    Fronts fronts;
 
     GenerationWithFronts()
         : GenerationWithSubjects(), generation(subjects, parsed.f)
     {
-        fronts = generation.nonDominatedSort();
     }
 };
-
-TEST_FIXTURE(GenerationWithFronts, initialValues)
-{
-    CHECK_EQUAL(4, fronts.size());
-    CHECK_EQUAL(5, fronts[0].size());
-    CHECK_EQUAL(3, fronts[1].size());
-    CHECK_EQUAL(1, fronts[2].size());
-    CHECK_EQUAL(1, fronts[3].size());
-    for(auto& subject : generation.getSubjects())
-        CHECK_EQUAL(0, subject->getDistance());
-}
-
-TEST_FIXTURE(GenerationWithFronts, crowdingDistanceAssignment)
-{
-    generation.calculateCrowdingDistances();
-    fronts = generation.getFronts();
-
-    const double inf = std::numeric_limits<double>::infinity();
-
-    CHECK_CLOSE(inf, fronts[0][0]->getDistance(), 0.01);
-    CHECK_CLOSE(0.28, fronts[0][1]->getDistance(), 0.01);
-    CHECK_CLOSE(0.19, fronts[0][2]->getDistance(), 0.01);
-    CHECK_CLOSE(0.25, fronts[0][3]->getDistance(), 0.01);
-    CHECK_CLOSE(inf, fronts[0][4]->getDistance(), 0.01);
-
-    CHECK_CLOSE(inf, fronts[1][0]->getDistance(), 0.01);
-    CHECK_CLOSE(0.12, fronts[1][1]->getDistance(), 0.01);
-    CHECK_CLOSE(inf, fronts[1][2]->getDistance(), 0.01);
-
-    CHECK_CLOSE(inf, fronts[2][0]->getDistance(), 0.01);
-
-    CHECK_CLOSE(inf, fronts[3][0]->getDistance(), 0.01);
-}
 
 TEST_FIXTURE(GenerationWithFronts, returnFirstFront)
 {
