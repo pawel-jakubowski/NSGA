@@ -1,6 +1,7 @@
 #include <unittest++/UnitTest++.h>
 #include <Expression.h>
 #include <CustomAssertion.h>
+#include <iostream>
 
 class ExpressionTest
 {

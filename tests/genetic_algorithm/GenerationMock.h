@@ -6,13 +6,13 @@
 class GenerationMock : public Generation
 {
 public:
-    GenerationMock(unsigned& subjectsCount, GoalFunctions& f)
-        : Generation(subjectsCount, f)
+    GenerationMock(unsigned& subjectsCount, Functions& goalFunctions, Functions& constraints)
+        : Generation(subjectsCount, goalFunctions, constraints)
     {
     }
 
-    GenerationMock(SubjectsContainer subjects, GoalFunctions& f)
-        : Generation(subjects, f)
+    GenerationMock(SubjectsContainer subjects, Functions& goalFunctions, Functions& constraints)
+        : Generation(subjects, goalFunctions, constraints)
     {
     }
 
@@ -21,12 +21,12 @@ public:
     {
     }
 
-    const SubjectsContainer& getSubjects()
+    const SubjectsContainer& getSubjects() const
     {
         return subjects;
     }
 
-    const Fronts& getFronts()
+    const Fronts& getFronts() const
     {
         return fronts;
     }

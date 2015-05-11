@@ -6,7 +6,7 @@
 class Fronts
 {
 public:
-    Fronts(GoalFunctions &newf);
+    Fronts(Functions &newf);
     void add(const unsigned &frontNumber, SubjectPtr subject);
     const Front operator[](const unsigned& frontId) const;
     unsigned size() const;
@@ -15,7 +15,7 @@ public:
     SubjectsContainer getFirstSubjects(unsigned subjectsCount);
     std::vector<std::vector<double>> getFirstFront();
 protected:
-    GoalFunctions* f;
+    Functions* f;
     std::vector<double> fMax;
     std::vector<double> fMin;
     std::vector<Front> fronts;

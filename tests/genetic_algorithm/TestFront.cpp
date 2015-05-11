@@ -5,10 +5,11 @@
 class FrontTest
 {
 public:
-    GoalFunctions f;
+    Functions f;
+    Functions g;
     Front front;
 
-    FrontTest() : f(2,2), front(f) {}
+    FrontTest() : f(2,2), g(2,2), front(f) {}
 };
 
 TEST_FIXTURE(FrontTest, copy)
@@ -23,7 +24,7 @@ TEST_FIXTURE(FrontTest, assign)
 
 TEST_FIXTURE(FrontTest, addSubject)
 {
-    SubjectPtr individual = std::make_shared<Subject>(f);
+    SubjectPtr individual = std::make_shared<Subject>(f,g);
     front.add(individual);
     CHECK_EQUAL(1, front.size());
 }
@@ -40,12 +41,13 @@ class FrontWithSubjects
 {
 public:
     SubjectsContainer subjects;
-    GoalFunctions f;
+    Functions f;
+    Functions g;
     std::vector<double> fMin;
     std::vector<double> fMax;
     Front front;
 
-    FrontWithSubjects() : f(2,2), fMin(2), fMax(2), front(f)
+    FrontWithSubjects() : f(2,2), g(2,2), fMin(2), fMax(2), front(f)
     {
         f[0].parse("x1-x2");
         f[1].parse("x1+x2");
@@ -78,7 +80,7 @@ public:
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new FenotypeMock(x,f));
+            gen.reset(new FenotypeMock(x,f,g));
             subjects.emplace_back(std::make_shared<Subject>(*gen));
             if(i < 5)
                 front.add(subjects[i]);

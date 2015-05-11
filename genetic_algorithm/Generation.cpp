@@ -1,22 +1,24 @@
 #include "Generation.h"
 #include "CustomAssertion.h"
 
-Generation::Generation(unsigned subjectsCount, GoalFunctions& newf)
-    : f(&newf)
-    , fMax(newf.size(), std::numeric_limits<double>::min())
-    , fMin(newf.size(), std::numeric_limits<double>::infinity())
-    , fronts(newf)
+Generation::Generation(unsigned subjectsCount, Functions& newGoalFunctions, Functions& newConstraints)
+    : goalFunctions(&newGoalFunctions)
+    , constraints(&newConstraints)
+    , fMax(newGoalFunctions.size(), std::numeric_limits<double>::min())
+    , fMin(newGoalFunctions.size(), std::numeric_limits<double>::infinity())
+    , fronts(newGoalFunctions)
 {
     for(unsigned i = 0; i < subjectsCount; ++i)
-        subjects.push_back(std::make_shared<Subject>(*f));
+        subjects.push_back(std::make_shared<Subject>(*goalFunctions, *constraints));
 }
 
-Generation::Generation(SubjectsContainer newSubjects, GoalFunctions& newf)
-    : f(&newf)
-    , fMax(newf.size(), std::numeric_limits<double>::min())
-    , fMin(newf.size(), std::numeric_limits<double>::infinity())
+Generation::Generation(SubjectsContainer newSubjects, Functions& newGoalFunctions, Functions &newConstraints)
+    : goalFunctions(&newGoalFunctions)
+    , constraints(&newConstraints)
+    , fMax(newGoalFunctions.size(), std::numeric_limits<double>::min())
+    , fMin(newGoalFunctions.size(), std::numeric_limits<double>::infinity())
     , subjects(newSubjects)
-    , fronts(newf)
+    , fronts(newGoalFunctions)
 {
 }
 
@@ -36,7 +38,7 @@ Generation Generation::produceNextGeneration()
 
 Generation Generation::fitFrontsToNextGeneration(const unsigned subjectsCount)
 {
-    Generation nextGeneration(fronts.getFirstSubjects(subjectsCount), *f);
+    Generation nextGeneration(fronts.getFirstSubjects(subjectsCount), *goalFunctions, *constraints);
     return nextGeneration;
 }
 
@@ -100,7 +102,7 @@ SubjectsContainer Generation::createTournamentPool()
 std::shared_ptr<Subject> Generation::findBestContestant(SubjectsContainer tournamentPool)
 {
     std::shared_ptr<Subject> bestContestant = tournamentPool[0];
-    for(auto& subject:tournamentPool)
+    for(auto& subject : tournamentPool)
         if(*subject < *bestContestant)
             bestContestant = subject;
 

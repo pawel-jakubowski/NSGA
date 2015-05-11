@@ -6,9 +6,10 @@
 class GenerationTest
 {
 public:
-    struct ParsedGoalFunctions {
-        GoalFunctions f;
-        ParsedGoalFunctions() : f(2,2)
+    struct ParsedFunctions {
+        Functions f;
+        Functions g;
+        ParsedFunctions() : f(2,2), g(5,2)
         {
             f[0].parse("x1-x2");
             f[1].parse("x1+x2");
@@ -20,7 +21,7 @@ public:
     GenerationTest()
         : parsed()
         , generationSize(50)
-        , generation(generationSize, parsed.f)
+        , generation(generationSize, parsed.f, parsed.g)
     {
     }
 };
@@ -32,17 +33,20 @@ TEST_FIXTURE(GenerationTest, generationCreation)
 
 TEST_FIXTURE(GenerationTest, produceNextGeneration)
 {
-    GenerationMock newGeneration = generation.produceNextGeneration();
-    std::vector<std::vector<double>> originalFront = generation.getFirstFront();
-    std::vector<std::vector<double>> nextFront = newGeneration.getFirstFront();
+    for(int i = 0; i < 100; ++i)
+    {
+        auto originalFront = generation.getFirstFront();
+        generation = generation.produceNextGeneration();
+        auto nextFront = generation.getFirstFront();
 
-    CHECK_EQUAL(generationSize, newGeneration.size());
-    CHECK_EQUAL(originalFront.size(), nextFront.size());
+        CHECK_EQUAL(generationSize, generation.size());
+        CHECK_EQUAL(originalFront.size(), nextFront.size());
 
-    for(unsigned i = 0; i < nextFront[0].size(); ++i)
-        for(unsigned j = 0; j < originalFront[0].size(); ++j)
-            CHECK(nextFront[0][i] <= originalFront[0][j] ||
-                  nextFront[1][i] <= originalFront[1][j]);
+        for(unsigned i = 0; i < nextFront[0].size(); ++i)
+            for(unsigned j = 0; j < originalFront[0].size(); ++j)
+                CHECK(nextFront[0][i] <= originalFront[0][j] ||
+                      nextFront[1][i] <= originalFront[1][j]);
+    }
 }
 
 class GenerationWithSubjects : public GenerationTest
@@ -52,10 +56,9 @@ public:
     std::vector<double> x1;
     std::vector<double> x2;
 
-    GenerationWithSubjects() : GenerationTest()
-    {
-        std::vector<double> x{0,0};
-        std::vector<double> x1 = {
+    GenerationWithSubjects()
+        : GenerationTest()
+        , x1 {
             // Front 1
             0.5, 1, 0.5, 1, -1,
             //Front 2
@@ -64,8 +67,8 @@ public:
             15,
             // Front 4
             40
-        };
-        std::vector<double> x2 = {
+          }
+        , x2 {
             // Front 1
             7.5, 0.5, 1.5, 5, -5,
             //Front 2
@@ -74,7 +77,9 @@ public:
             3,
             // Front 4
             0
-        };
+          }
+    {
+        std::vector<double> x{0,0};
 
         subjects.reserve(x1.size());
         std::unique_ptr<FenotypeMock> gen;
@@ -82,7 +87,7 @@ public:
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new FenotypeMock(x,parsed.f));
+            gen.reset(new FenotypeMock(x,parsed.f,parsed.g));
             subjects.emplace_back(std::make_shared<Subject>(*gen));
         }
     }
@@ -90,7 +95,7 @@ public:
 
 TEST_FIXTURE(GenerationWithSubjects, reproduction)
 {
-    GenerationMock generation = GenerationMock(subjects, parsed.f);
+    GenerationMock generation = GenerationMock(subjects, parsed.f, parsed.g);
     SubjectsContainer offsprings = generation.reproduction(generation.size());
     CHECK_EQUAL(generation.size(), offsprings.size());
         for(auto& offspring : offsprings)
@@ -105,7 +110,7 @@ public:
     GenerationMock generation;
 
     GenerationWithFronts()
-        : GenerationWithSubjects(), generation(subjects, parsed.f)
+        : GenerationWithSubjects(), generation(subjects, parsed.f, parsed.g)
     {
     }
 };
@@ -120,4 +125,68 @@ TEST_FIXTURE(GenerationWithFronts, returnFirstFront)
     for(unsigned i = 0; i < firstFront[0].size(); ++i)
         for(unsigned j = 0; j < parsed.f.size(); ++j)
             CHECK_EQUAL(subjects[i]->rateByF(j), firstFront[j][i]);
+}
+
+class GenerationWithConstraints : public GenerationWithSubjects
+{
+public:
+    std::unique_ptr<GenerationMock> generation;
+
+    GenerationWithConstraints()
+        : GenerationWithSubjects()
+    {
+        parsed.g[0].parse(parsed.f[0].getExpressionString() + "< 5");
+        parsed.g[1].parse(parsed.f[1].getExpressionString() + ">= 1.5");
+        parsed.g[2].parse(parsed.f[1].getExpressionString() + "< 10");
+        parsed.g[3].parse(parsed.f[0].getExpressionString() + "<" +
+                parsed.f[1].getExpressionString());
+        parsed.g[4].parse(parsed.f[1].getExpressionString() + ">= -7");
+
+        std::vector<double> x{0,0};
+        std::unique_ptr<FenotypeMock> gen;
+        subjects.clear();
+        for(unsigned i = 0; i < x1.size(); ++i)
+        {
+            x[0] = x1[i];
+            x[1] = x2[i];
+            gen.reset(new FenotypeMock(x,parsed.f,parsed.g));
+            subjects.emplace_back(std::make_shared<Subject>(*gen));
+        }
+
+        generation.reset(new GenerationMock(subjects, parsed.f, parsed.g));
+    }
+
+    unsigned countInfeasibleSubjects(const GenerationMock& generation)
+    {
+        unsigned infeasibleSubjects = 0;
+        for(auto& subject : generation.getSubjects())
+            if(subject->violatedConstraintsCount() > 0)
+                ++infeasibleSubjects;
+        return infeasibleSubjects;
+    }
+};
+
+TEST_FIXTURE(GenerationWithConstraints, checkViolatedConstraints)
+{
+    CHECK_EQUAL(6, countInfeasibleSubjects(*generation));
+    CHECK_EQUAL(0, subjects[0]->violatedConstraintsCount());
+    CHECK_EQUAL(0, subjects[1]->violatedConstraintsCount());
+    CHECK_EQUAL(0, subjects[2]->violatedConstraintsCount());
+    CHECK_EQUAL(0, subjects[3]->violatedConstraintsCount());
+    CHECK_EQUAL(2, subjects[4]->violatedConstraintsCount());
+
+    CHECK_EQUAL(2, subjects[5]->violatedConstraintsCount());
+    CHECK_EQUAL(2, subjects[6]->violatedConstraintsCount());
+    CHECK_EQUAL(1, subjects[7]->violatedConstraintsCount());
+    CHECK_EQUAL(2, subjects[8]->violatedConstraintsCount());
+    CHECK_EQUAL(3, subjects[9]->violatedConstraintsCount());
+}
+
+TEST_FIXTURE(GenerationWithConstraints, infeasibleSubjectsInNextGeneration)
+{
+    for (unsigned i = 0; i < 20; ++i)
+    {
+        generation.reset(new GenerationMock(generation->produceNextGeneration()));
+        CHECK_EQUAL(0, countInfeasibleSubjects(*generation));
+    }
 }

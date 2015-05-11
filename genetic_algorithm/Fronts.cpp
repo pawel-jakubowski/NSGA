@@ -1,7 +1,7 @@
 #include "Fronts.h"
 #include <CustomAssertion.h>
 
-Fronts::Fronts(GoalFunctions& newf)
+Fronts::Fronts(Functions& newf)
     : f(&newf)
     , fMax(newf.size(), std::numeric_limits<double>::min())
     , fMin(newf.size(), std::numeric_limits<double>::infinity())

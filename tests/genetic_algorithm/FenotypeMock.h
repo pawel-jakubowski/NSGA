@@ -6,10 +6,12 @@
 class FenotypeMock : public Fenotype
 {
 public:
-    FenotypeMock(std::vector<double> x, GoalFunctions& f)
-        : Fenotype(f, -5.0, 5.0)
+    FenotypeMock(std::vector<double> x, Functions& goalFunctions, Functions& constraints)
+        : Fenotype(goalFunctions, constraints, -5.0, 5.0)
     {
-        getFValues(f, x);
+        gen = x;
+        calculateFunctionsValues();
+        calculateViolatedConstraints();
     }
     virtual ~FenotypeMock() {}
 };

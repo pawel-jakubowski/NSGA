@@ -7,12 +7,14 @@
 class SubjectTest
 {
 public:
-    GoalFunctions f;
+    Functions f;
+    Functions g;
     Subject individual;
 
     SubjectTest()
         : f(2,5)
-        , individual(f)
+        , g(5,5)
+        , individual(f,g)
     {
     }
 };
@@ -24,7 +26,7 @@ TEST_FIXTURE(SubjectTest, subjectCanCopy)
 
 TEST_FIXTURE(SubjectTest, childSubjectCreation)
 {
-    Subject parentA(f), parentB(f);
+    Subject parentA(f,g), parentB(f,g);
     Subject child(parentA, parentB);
 }
 
@@ -39,29 +41,17 @@ TEST_FIXTURE(SubjectTest, setAndGetDistance)
     CHECK_CLOSE(infinity, individual.getDistance(), 0.01);
 }
 
-class SubjectOperatorsTest : public SubjectTest
+TEST_FIXTURE(SubjectTest, crowdedComparisonOperator)
 {
-public:
-    const unsigned infinity = std::numeric_limits<unsigned>::max();
-    Subject A;
-    Subject B;
-    Subject C;
+    Subject A(individual);
+    Subject B(individual);
+    Subject C(individual);
+    A.setRank(5);
+    B.setRank(7);
+    B.setDistance(10);
+    C.setRank(7);
+    C.setDistance(std::numeric_limits<unsigned>::max());
 
-    SubjectOperatorsTest()
-        : A(individual)
-        , B(individual)
-        , C(individual)
-    {
-        A.setRank(5);
-        B.setRank(7);
-        B.setDistance(10);
-        C.setRank(7);
-        C.setDistance(infinity);
-    }
-};
-
-TEST_FIXTURE(SubjectOperatorsTest, crowdedComparisonOperator)
-{
     CHECK(A < B);
     CHECK(C < B);
     CHECK(A < C);
@@ -70,27 +60,28 @@ TEST_FIXTURE(SubjectOperatorsTest, crowdedComparisonOperator)
 class SubjectDominationTest : public SubjectTest
 {
 public:
-    std::vector<double> x;
+    std::vector<double> x1;
+    std::vector<double> x2;
     std::shared_ptr<Subject> A;
     std::shared_ptr<Subject> B;
     std::shared_ptr<Subject> C;
     std::shared_ptr<Subject> D;
     std::shared_ptr<Subject> E;
-    std::unique_ptr<FenotypeMock> gen;
 
-    SubjectDominationTest() : x{1,1,0,0,0}
+    SubjectDominationTest() : x1{1,0.5,0,1,-1}, x2{1,1.5,0,5,-5}
     {
         f[0].parse("x1-x2");
         f[1].parse("x1+x2");
-        std::vector<double> x1{1,0.5,0,1,-1};
-        std::vector<double> x2{1,1.5,0,5,-5};
+
+        std::vector<double> x{1,1,0,0,0};
         std::vector<std::shared_ptr<Subject>> subjects(5);
+        std::unique_ptr<FenotypeMock> gen;
 
         for (unsigned i = 0; i < x1.size(); ++i)
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new FenotypeMock(x,f));
+            gen.reset(new FenotypeMock(x,f,g));
             subjects[i].reset(new Subject(*gen));
         }
         A = subjects[0];
@@ -132,4 +123,60 @@ TEST_FIXTURE(SubjectDominationTest, domination)
     CHECK(A->isDominatedBy(*C));
     CHECK(!A->isDominatedBy(*D));
     CHECK(!A->isDominatedBy(*E));
+}
+
+class SubjectWithConstraints : public SubjectDominationTest
+{
+public:
+    SubjectWithConstraints() : SubjectDominationTest()
+    {
+        f[0].parse("x1-x2");
+        f[1].parse("x1+x2");
+
+        g[0].parse(f[0].getExpressionString() + ">= 0");
+        g[1].parse(f[1].getExpressionString() + "< 6");
+        g[2].parse(f[1].getExpressionString() + "> -1");
+
+        std::vector<double> x{1,1,0,0,0};
+        std::vector<std::shared_ptr<Subject>> subjects(5);
+        std::unique_ptr<FenotypeMock> gen;
+
+        for (unsigned i = 0; i < x1.size(); ++i)
+        {
+            x[0] = x1[i];
+            x[1] = x2[i];
+            gen.reset(new FenotypeMock(x,f,g));
+            subjects[i].reset(new Subject(*gen));
+        }
+        A = subjects[0];
+        B = subjects[1];
+        C = subjects[2];
+        D = subjects[3];
+        E = subjects[4];
+    }
+};
+
+TEST_FIXTURE(SubjectWithConstraints, violatedConstraintsCount)
+{
+    CHECK_EQUAL(0, A->violatedConstraintsCount());
+    CHECK_EQUAL(1, B->violatedConstraintsCount());
+    CHECK_EQUAL(0, C->violatedConstraintsCount());
+    CHECK_EQUAL(2, D->violatedConstraintsCount());
+    CHECK_EQUAL(1, E->violatedConstraintsCount());
+}
+
+TEST_FIXTURE(SubjectWithConstraints, crowdedComparisonOperator)
+{
+    A->setRank(2);
+    B->setRank(1);
+    C->setRank(1);
+    D->setRank(1);
+    E->setRank(1);
+
+    CHECK(*A < *B);
+    CHECK(*A < *D);
+    CHECK(*A < *E);
+    CHECK(*B < *D);
+    CHECK(*C < *A);
+    CHECK(*E < *D);
 }

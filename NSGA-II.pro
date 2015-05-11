@@ -25,7 +25,7 @@ SOURCES += main.cpp \
     genetic_algorithm/Subject.cpp \
     math/Expression.cpp \
     genetic_algorithm/Fenotype.cpp \
-    math/GoalFunctions.cpp \
+    math/Functions.cpp \
     math/RandomGenerator.cpp \
     genetic_algorithm/Nsga.cpp \
     genetic_algorithm/Front.cpp \
@@ -44,7 +44,7 @@ HEADERS += \
     math/Expression.h \
     libraries/CustomAssertion.h \
     genetic_algorithm/Fenotype.h \
-    math/GoalFunctions.h \
+    math/Functions.h \
     math/RandomGenerator.h \
     interfaces/Core.h \
     genetic_algorithm/Nsga.h \

@@ -9,14 +9,15 @@ class Generation
     static const int matingSize = 30;
     static const int tournamentSize = 5;
 public:
-    Generation(unsigned subjectsCount, GoalFunctions& newf);
-    Generation(SubjectsContainer newSubjects, GoalFunctions &newf);
+    Generation(unsigned subjectsCount, Functions& newGoalFunctions, Functions& newConstraints);
+    Generation(SubjectsContainer newSubjects, Functions& newGoalFunctions, Functions& newConstraints);
     Generation produceNextGeneration();
     unsigned size() const;
     void addSubject(std::shared_ptr<Subject> subject);
     std::vector<std::vector<double>> getFirstFront();
 protected:
-    GoalFunctions* f;
+    Functions* goalFunctions;
+    Functions* constraints;
     std::vector<double> fMax;
     std::vector<double> fMin;
     SubjectsContainer subjects;

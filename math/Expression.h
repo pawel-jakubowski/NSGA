@@ -25,6 +25,7 @@ public:
     double& at(const std::string& key);
     double variablesCount();
     std::vector<std::string> getAllVariableKeys();
+    std::string getExpressionString();
 private:
     std::map<std::string,double> x;
     exprtk::expression<double> expression;

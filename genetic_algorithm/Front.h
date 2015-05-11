@@ -10,7 +10,7 @@ class Front
 public:
     class iterator;
 
-    Front(const GoalFunctions& f);
+    Front(const Functions& f);
     void add(SubjectPtr individual);
     const SubjectPtr operator[](const unsigned& subjectId) const;
     SubjectsContainer::iterator begin();

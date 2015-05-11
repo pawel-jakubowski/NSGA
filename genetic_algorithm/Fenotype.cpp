@@ -1,24 +1,31 @@
 #include "Fenotype.h"
 #include <CustomAssertion.h>
 #include <random>
-#include <iostream>
 
-Fenotype::Fenotype(GoalFunctions& newf, double genLowerBound, double genUpperBound)
-    : f(&newf)
-    , fValue(f->size(),0)
+Fenotype::Fenotype(Functions& newGoalFunctions, Functions& newConstraints, double genLowerBound, double genUpperBound)
+    : goalFunctions(&newGoalFunctions)
+    , constraints(&newConstraints)
+    , fValue(goalFunctions->size(),0)
+    , gValue(constraints->size(),0)
 {
-    gen.resize(f->at(0).variablesCount());
+    assert(goalFunctions->variablesCount() == constraints->variablesCount());
+
+    gen.resize(goalFunctions->at(0).variablesCount());
     fillWithRandomVariables(gen, genLowerBound, genUpperBound);
-    getFValues(*f, gen);
+    calculateFunctionsValues();
+    calculateViolatedConstraints();
 }
 
 Fenotype::Fenotype(const Fenotype &fenotypeA, const Fenotype &fenotypeB)
-    : f(fenotypeA.f)
-    , fValue(f->size(),0)
+    : goalFunctions(fenotypeA.goalFunctions)
+    , constraints(fenotypeA.constraints)
+    , fValue(goalFunctions->size(),0)
+    , gValue(constraints->size(),0)
 {
     crossover(fenotypeA.getGenotype(), fenotypeB.getGenotype());
     mutate();
-    getFValues(*f, gen);
+    calculateFunctionsValues();
+    calculateViolatedConstraints();
 }
 
 void Fenotype::crossover(const std::vector<double>& genotypeA, const std::vector<double>& genotypeB)
@@ -54,21 +61,41 @@ std::vector<double> Fenotype::getGenotype() const
     return gen;
 }
 
+unsigned Fenotype::violatedConstraintsCount() const
+{
+    return violatedConstraints;
+}
+
 void Fenotype::fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound)
 {
     for(auto& x : randomX)
         x = generator.rand(lowerBound, upperBound);
 }
 
-void Fenotype::getFValues(GoalFunctions &f, std::vector<double>& variables)
+void Fenotype::calculateFunctionsValues()
 {
-    gen = variables;
     int i = -1;
-    for(unsigned m = 0; m < f.size(); ++m)
+    for(unsigned m = 0; m < goalFunctions->size(); ++m)
     {
         i = -1;
-        for(auto& key : f[m].getAllVariableKeys())
-            f[m](key) = gen[++i];
-        fValue[m] = f[m].value();
+        for(auto& key : goalFunctions->at(m).getAllVariableKeys())
+            goalFunctions->at(m)(key) = gen[++i];
+        fValue[m] = goalFunctions->at(m).value();
     }
+
+    for(unsigned m = 0; m < constraints->size(); ++m)
+    {
+        i = -1;
+        for(auto& key : constraints->at(m).getAllVariableKeys())
+            constraints->at(m)(key) = gen[++i];
+        gValue[m] = constraints->at(m).value();
+    }
+}
+
+void Fenotype::calculateViolatedConstraints()
+{
+    violatedConstraints = 0;
+    for(auto& constraint : *constraints)
+        if(!constraint.isFeasible())
+            ++violatedConstraints;
 }

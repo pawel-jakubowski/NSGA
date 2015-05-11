@@ -79,3 +79,8 @@ std::vector<std::string> Expression::getAllVariableKeys()
         keys.push_back(element.first);
     return keys;
 }
+
+std::string Expression::getExpressionString()
+{
+    return expressionString;
+}

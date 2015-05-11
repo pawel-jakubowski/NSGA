@@ -11,11 +11,12 @@ class Subject
 {
 public:
     Subject(const Fenotype& newGen);
-    Subject(GoalFunctions& f);
+    Subject(Functions& goalFunctions, Functions &newConstraints);
     Subject(const Subject& parentA, const Subject& parentB);
     virtual ~Subject() {}
 
     const double& rateByF(const unsigned& function) const;
+    unsigned violatedConstraintsCount() const;
     void checkDomination(SubjectPtr q);
     bool isDominatedBy(const Subject& s) const;
     bool operator<(const Subject& r) const; // Crowded distance operator

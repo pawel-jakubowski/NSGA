@@ -1,9 +1,9 @@
 #include <unittest++/UnitTest++.h>
-#include <GoalFunctions.h>
+#include <Functions.h>
 
 TEST(goalFunctionsInitialization)
 {
-    GoalFunctions f(2,5);
+    Functions f(2,5);
     CHECK_EQUAL(2, f.size());
     CHECK_EQUAL(5, f[0].variablesCount());
     CHECK_EQUAL(5, f[1].variablesCount());
@@ -13,7 +13,7 @@ TEST(goalFunctionsInitialization)
 TEST(goalFunctionsInitializationList)
 {
     Expression f1(3), f2(3), f3(3), f4(3);
-    GoalFunctions f{f1,f2,f3,f4};
+    Functions f{f1,f2,f3,f4};
     CHECK_EQUAL(4, f.size());
     CHECK_EQUAL(3, f[0].variablesCount());
     CHECK_EQUAL(3, f[1].variablesCount());
@@ -26,11 +26,11 @@ TEST(passGoalFunctions)
     Expression f1(1);
     Expression& f1ref = f1;
 
-    GoalFunctions f{f1ref};
+    Functions f{f1ref};
     CHECK_EQUAL(1, f.size());
     CHECK_EQUAL(1, f[0].variablesCount());
 
-    GoalFunctions& fRef(f);
+    Functions& fRef(f);
     CHECK_EQUAL(1, fRef.size());
     CHECK_EQUAL(1, fRef[0].variablesCount());
 }

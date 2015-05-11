@@ -5,16 +5,18 @@ class FenotypeTest
 {
 public:
     std::vector<double> x;
-    GoalFunctions f;
+    Functions f;
+    Functions g;
     std::unique_ptr<FenotypeMock> gen;
 
     FenotypeTest()
         : x{1,2,3,4,5}
         , f(2,5)
+        , g(5,5)
     {
         f[0].parse("x1+x2+x3+x4+x5");
         f[1].parse("x1-x2-x3-x4-x5");
-        gen.reset(new FenotypeMock(x, f));
+        gen.reset(new FenotypeMock(x, f, g));
     }
 };
 
@@ -36,7 +38,7 @@ TEST_FIXTURE(FenotypeTest, fenotypeCanCopy)
 
 TEST_FIXTURE(FenotypeTest, childFenotypeCreation)
 {
-    Fenotype parentA(f,-5,5), parentB(f,-5,5);
+    Fenotype parentA(f,g,-5,5), parentB(f,g,-5,5);
     Fenotype child(parentA, parentB);
 
     CHECK(!isnan(child.rateByF(0)));
@@ -77,4 +79,28 @@ TEST_FIXTURE(FenotypeWithFValuesTest, fenotypeIsConstantAfterChangingX)
     f[0].at("x1") = f[1].at("x5") = 20;
     CHECK_EQUAL(f1Value, gen->rateByF(0));
     CHECK_EQUAL(f2Value, gen->rateByF(1));
+}
+
+TEST_FIXTURE(FenotypeWithFValuesTest, violatedConstraintsCount)
+{
+    CHECK_EQUAL(0, gen->violatedConstraintsCount());
+}
+
+class FenotypeWithConstraints : public FenotypeWithFValuesTest
+{
+public:
+    FenotypeWithConstraints()
+    {
+        g[0].parse("x1+x2+x3 < x4+x5");
+        g[1].parse("x3-x4-x5 > x1-x2");
+        g[2].parse("x1+x2    == x3");
+        g[3].parse("x2+x3    <= x5");
+        g[4].parse("x4-x1    >= x5");
+        gen.reset(new FenotypeMock(x, f, g));
+    }
+};
+
+TEST_FIXTURE(FenotypeWithConstraints, violatedConstraintsCount)
+{
+    CHECK_EQUAL(2, gen->violatedConstraintsCount());
 }

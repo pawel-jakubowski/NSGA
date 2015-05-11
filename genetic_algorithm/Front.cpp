@@ -1,7 +1,7 @@
 #include "Front.h"
 #include <CustomAssertion.h>
 
-Front::Front(const GoalFunctions& f) : fSize(f.size())
+Front::Front(const Functions &f) : fSize(f.size())
 {
 }
 

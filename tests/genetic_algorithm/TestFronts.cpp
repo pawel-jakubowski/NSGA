@@ -5,9 +5,10 @@
 class FrontsTest
 {
 public:
-    struct ParsedGoalFunctions {
-        GoalFunctions f;
-        ParsedGoalFunctions() : f(2,2)
+    struct ParsedFunctions {
+        Functions f;
+        Functions g;
+        ParsedFunctions() : f(2,2), g(2,2)
         {
             f[0].parse("x1-x2");
             f[1].parse("x1+x2");
@@ -23,9 +24,9 @@ TEST_FIXTURE(FrontsTest, creatingFronts)
 {
     CHECK_EQUAL(0, fronts.size());
 
-    fronts.add(0, std::make_shared<Subject>(parsed.f));
-    fronts.add(0, std::make_shared<Subject>(parsed.f));
-    fronts.add(1, std::make_shared<Subject>(parsed.f));
+    fronts.add(0, std::make_shared<Subject>(parsed.f, parsed.g));
+    fronts.add(0, std::make_shared<Subject>(parsed.f, parsed.g));
+    fronts.add(1, std::make_shared<Subject>(parsed.f, parsed.g));
 
     CHECK_EQUAL(2, fronts.size());
     CHECK_EQUAL(2, fronts[0].size());
@@ -75,7 +76,7 @@ public:
         {
             x[0] = x1[i];
             x[1] = x2[i];
-            gen.reset(new FenotypeMock(x,parsed.f));
+            gen.reset(new FenotypeMock(x,parsed.f,parsed.g));
             subjects.emplace_back(std::make_shared<Subject>(*gen));
         }
     }
