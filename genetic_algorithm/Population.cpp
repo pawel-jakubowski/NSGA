@@ -1,17 +1,23 @@
 #include "Population.h"
 #include <CustomAssertion.h>
 
-Population::Population(unsigned firstGenerationSize, Functions& newGoalFunctions, Functions &newConstraints)
+Population::Population(unsigned firstGenerationSize, Functions& newGoalFunctions,
+                       Functions &newConstraints, double newLowerBound, double newUpperBound)
     : goalFunctions(&newGoalFunctions)
     , constraints(&newConstraints)
-    , generations(1, Generation(firstGenerationSize, *goalFunctions, *constraints))
+    , lowerBound(newLowerBound)
+    , upperBound(newUpperBound)
+    , generations(1, Generation(firstGenerationSize, *goalFunctions, *constraints, lowerBound,
+                                upperBound))
 {
 }
 
 std::vector<std::vector<double>> Population::generateGenerations(unsigned generationsCount)
 {
     assert(generations.size() >= 1);
-    generations.resize(1, Generation(sizeOfGeneration(1), *goalFunctions, *constraints));
+    generations.resize(1,
+            Generation(sizeOfGeneration(1), *goalFunctions, *constraints, lowerBound, upperBound)
+        );
     for (unsigned i = 0; i < generationsCount - 1; ++i)
         generations.push_back(generations[i].produceNextGeneration());
     generations.shrink_to_fit();

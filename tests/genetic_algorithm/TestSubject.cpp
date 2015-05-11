@@ -14,7 +14,7 @@ public:
     SubjectTest()
         : f(2,5)
         , g(5,5)
-        , individual(f,g)
+        , individual(f,g,-5,5)
     {
     }
 };
@@ -26,7 +26,7 @@ TEST_FIXTURE(SubjectTest, subjectCanCopy)
 
 TEST_FIXTURE(SubjectTest, childSubjectCreation)
 {
-    Subject parentA(f,g), parentB(f,g);
+    Subject parentA(individual), parentB(individual);
     Subject child(parentA, parentB);
 }
 

@@ -24,7 +24,7 @@ TEST_FIXTURE(FrontTest, assign)
 
 TEST_FIXTURE(FrontTest, addSubject)
 {
-    SubjectPtr individual = std::make_shared<Subject>(f,g);
+    SubjectPtr individual = std::make_shared<Subject>(f,g,-5,5);
     front.add(individual);
     CHECK_EQUAL(1, front.size());
 }

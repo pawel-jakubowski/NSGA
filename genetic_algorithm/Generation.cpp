@@ -1,7 +1,8 @@
 #include "Generation.h"
 #include "CustomAssertion.h"
 
-Generation::Generation(unsigned subjectsCount, Functions& newGoalFunctions, Functions& newConstraints)
+Generation::Generation(unsigned subjectsCount, Functions& newGoalFunctions,
+                       Functions& newConstraints, double lowerBound, double upperBound)
     : goalFunctions(&newGoalFunctions)
     , constraints(&newConstraints)
     , fMax(newGoalFunctions.size(), std::numeric_limits<double>::min())
@@ -9,10 +10,13 @@ Generation::Generation(unsigned subjectsCount, Functions& newGoalFunctions, Func
     , fronts(newGoalFunctions)
 {
     for(unsigned i = 0; i < subjectsCount; ++i)
-        subjects.push_back(std::make_shared<Subject>(*goalFunctions, *constraints));
+        subjects.push_back(
+                std::make_shared<Subject>(*goalFunctions, *constraints, lowerBound, upperBound)
+            );
 }
 
-Generation::Generation(SubjectsContainer newSubjects, Functions& newGoalFunctions, Functions &newConstraints)
+Generation::Generation(SubjectsContainer newSubjects, Functions& newGoalFunctions,
+                       Functions &newConstraints)
     : goalFunctions(&newGoalFunctions)
     , constraints(&newConstraints)
     , fMax(newGoalFunctions.size(), std::numeric_limits<double>::min())
@@ -109,7 +113,8 @@ std::shared_ptr<Subject> Generation::findBestContestant(SubjectsContainer tourna
     return bestContestant;
 }
 
-SubjectsContainer Generation::createOffspringsFromPool(unsigned subjectsCount, SubjectsContainer matingPool)
+SubjectsContainer Generation::createOffspringsFromPool(unsigned subjectsCount,
+                                                       SubjectsContainer matingPool)
 {
     RandomGenerator generator;
 

@@ -9,8 +9,10 @@ class Generation
     static const int matingSize = 30;
     static const int tournamentSize = 5;
 public:
-    Generation(unsigned subjectsCount, Functions& newGoalFunctions, Functions& newConstraints);
-    Generation(SubjectsContainer newSubjects, Functions& newGoalFunctions, Functions& newConstraints);
+    Generation(unsigned subjectsCount, Functions& newGoalFunctions, Functions& newConstraints,
+               double lowerBound, double upperBound);
+    Generation(SubjectsContainer newSubjects, Functions& newGoalFunctions,
+               Functions& newConstraints);
     Generation produceNextGeneration();
     unsigned size() const;
     void addSubject(std::shared_ptr<Subject> subject);
@@ -26,7 +28,8 @@ protected:
 
     Generation fitFrontsToNextGeneration(const unsigned subjectsCount);
     SubjectsContainer reproduction (unsigned subjectsCount);
-    SubjectsContainer createOffspringsFromPool(unsigned subjectsCount, SubjectsContainer matingPool);
+    SubjectsContainer createOffspringsFromPool(unsigned subjectsCount,
+                                               SubjectsContainer matingPool);
     SubjectsContainer createMatingPool();
     std::shared_ptr<Subject> findBestContestant(SubjectsContainer tournamentPool);
     SubjectsContainer createTournamentPool();

@@ -22,7 +22,8 @@ private:
     unsigned fSize;
     SubjectsContainer subjects;
 
-    double calculateDistance(unsigned subjectIndex, const unsigned &goalFunctionIndex, const double &fMin, const double &fMax);
+    double calculateDistance(unsigned subjectIndex, const unsigned &goalFunctionIndex,
+                             const double &fMin, const double &fMax);
 };
 
 #endif // FRONT_H

@@ -7,10 +7,11 @@ Subject::Subject(const Fenotype &newGen)
 {
 }
 
-Subject::Subject(Functions& goalFunctions, Functions &newConstraints)
+Subject::Subject(Functions& goalFunctions, Functions &newConstraints, double lowerBound,
+                 double upperBound)
     : distance(0)
     , rank(0)
-    , gen(goalFunctions, newConstraints, -5, 5)
+    , gen(goalFunctions, newConstraints, lowerBound, upperBound)
 {
 }
 

@@ -2,7 +2,8 @@
 #include <CustomAssertion.h>
 #include <random>
 
-Fenotype::Fenotype(Functions& newGoalFunctions, Functions& newConstraints, double genLowerBound, double genUpperBound)
+Fenotype::Fenotype(Functions& newGoalFunctions, Functions& newConstraints, double genLowerBound,
+                   double genUpperBound)
     : goalFunctions(&newGoalFunctions)
     , constraints(&newConstraints)
     , fValue(goalFunctions->size(),0)
@@ -66,7 +67,8 @@ unsigned Fenotype::violatedConstraintsCount() const
     return violatedConstraints;
 }
 
-void Fenotype::fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound)
+void Fenotype::fillWithRandomVariables(std::vector<double>& randomX, double lowerBound,
+                                       double upperBound)
 {
     for(auto& x : randomX)
         x = generator.rand(lowerBound, upperBound);

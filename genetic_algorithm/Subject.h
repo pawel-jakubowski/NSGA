@@ -11,7 +11,8 @@ class Subject
 {
 public:
     Subject(const Fenotype& newGen);
-    Subject(Functions& goalFunctions, Functions &newConstraints);
+    Subject(Functions& goalFunctions, Functions &newConstraints, double lowerBound,
+            double upperBound);
     Subject(const Subject& parentA, const Subject& parentB);
     virtual ~Subject() {}
 

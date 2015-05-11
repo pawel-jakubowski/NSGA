@@ -24,9 +24,9 @@ TEST_FIXTURE(FrontsTest, creatingFronts)
 {
     CHECK_EQUAL(0, fronts.size());
 
-    fronts.add(0, std::make_shared<Subject>(parsed.f, parsed.g));
-    fronts.add(0, std::make_shared<Subject>(parsed.f, parsed.g));
-    fronts.add(1, std::make_shared<Subject>(parsed.f, parsed.g));
+    fronts.add(0, std::make_shared<Subject>(parsed.f, parsed.g, -5, 5));
+    fronts.add(0, std::make_shared<Subject>(parsed.f, parsed.g, -5, 5));
+    fronts.add(1, std::make_shared<Subject>(parsed.f, parsed.g, -5, 5));
 
     CHECK_EQUAL(2, fronts.size());
     CHECK_EQUAL(2, fronts[0].size());

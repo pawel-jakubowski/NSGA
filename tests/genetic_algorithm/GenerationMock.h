@@ -7,7 +7,7 @@ class GenerationMock : public Generation
 {
 public:
     GenerationMock(unsigned& subjectsCount, Functions& goalFunctions, Functions& constraints)
-        : Generation(subjectsCount, goalFunctions, constraints)
+        : Generation(subjectsCount, goalFunctions, constraints, -5, 5)
     {
     }
 

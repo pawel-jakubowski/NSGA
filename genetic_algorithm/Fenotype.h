@@ -9,7 +9,8 @@
 class Fenotype
 {
 public:
-    Fenotype(Functions& newGoalFunctions, Functions& newConstraints, double genLowerBound, double genUpperBound);
+    Fenotype(Functions& newGoalFunctions, Functions& newConstraints, double genLowerBound,
+             double genUpperBound);
     Fenotype(const Fenotype& fenotypeA, const Fenotype& fenotypeB);
     virtual ~Fenotype() {}
 
@@ -27,7 +28,8 @@ protected:
 
     void crossover(const std::vector<double> &genotypeA, const std::vector<double> &genotypeB);
     void mutate();
-    void fillWithRandomVariables(std::vector<double>& randomX, double lowerBound, double upperBound);
+    void fillWithRandomVariables(std::vector<double>& randomX, double lowerBound,
+                                 double upperBound);
     void calculateFunctionsValues();
     void calculateViolatedConstraints();
 };
