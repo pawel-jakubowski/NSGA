@@ -16,14 +16,22 @@ struct CoreSettings
         , individualsCount(firstGenerationSize)
         , generationsCount(newGenerationsCount)
         , variablesCount(newVariableCount)
-    {}
+
+    {
+
+    }
 
     std::vector<std::string> f;
     std::vector<std::string> g;
     unsigned individualsCount;
     unsigned generationsCount;
     unsigned variablesCount;
+//    unsigned lowerBound;
+//    unsigned upperBound;
+
 };
+
+
 
 class Nsga : public Core<ResultType>
 {

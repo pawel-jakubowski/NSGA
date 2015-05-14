@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <MathGlDrawer.h>
 #include <mgl2/qmathgl.h>
+#include <Nsga.h>
 
 namespace Ui {
 class MainWindow;
@@ -18,10 +19,13 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+
 private:
     Ui::MainWindow *ui;
     QMathGL *QMGL;
     MathGlDrawer drawer;
+    Core<ResultType>* core;
+    CoreSettings settings;
 };
 
 #endif // MAINWINDOW_H

@@ -1,43 +1,41 @@
 #include "MathGlDrawer.h"
 #include <mgl2/surf.h>
 #include <QMessageBox>
-#include <iostream>
 
 MathGlDrawer::MathGlDrawer()
 {
 }
 
-void MathGlDrawer::initData()
+void MathGlDrawer::initData(doublesMatrix results)
 {
-    unsigned n=100;
-    x1.Create(n,n);
-    x2.Create(n,n);
-    a.Create(n,n);
+    f1.Create(results[0].size());
+    f2.Create(results[0].size());
+    g1.Create(results[0].size());
+//    g2.Create(results[0].size());
+//    g3.Create(results[0].size());
+//    g4.Create(results[0].size());
+//    g5.Create(results[0].size());
 
-    parser.parse(fn_string.toStdString());
 
-    doublesVector xVector = parser.createVectorWithLength(n,-5,5);
+    a.Create(results[0].size());
 
-    for(doublesVector::size_type i = 0; i != n; i++)
-        for(doublesVector::size_type j = 0; j != n; j++)
+
+        for(unsigned i = 0; i != results[0].size(); i++)
         {
-            parser("x1") = xVector[i];
-            parser("x2") = xVector[j];
-            x1.SetVal(parser("x1"),i,j);
-            x2.SetVal(parser("x2"),i,j);
-            a.SetVal(parser.value(),i,j);
+            f1.SetVal(results[0][i],i);
+            f2.SetVal(results[1][i],i);
         }
 }
 
 int MathGlDrawer::Draw(mglGraph* gr)
 {
-    initData();
-    gr->Title("Surf plot");
-    gr->Rotate(50,60);
+    //initData(results);
+    gr->Title("NSGA-II");
+    //gr->Rotate(50,60);
     gr->Box();
-    gr->SetRanges(x1,x2,a);
+    gr->SetRanges(f1,f2,a);
     gr->Axis();
-    gr->Surf(x1,x2,a);
+    gr->Plot(f1,f2,a);
 
     return 0;
 }
