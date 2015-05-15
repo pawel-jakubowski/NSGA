@@ -23,6 +23,12 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_indivnr_textChanged(const QString);
+
+    void on_genernr_textChanged(const QString);
+
+    void on_varnr_textChanged(const QString);
+
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<QMathGL> QMGL;

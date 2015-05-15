@@ -12,6 +12,7 @@ void Nsga::execute(const CoreSettings &settings)
               << "g3 = " << settings.g[2] << std::endl
               << "g4 = " << settings.g[3] << std::endl
               << "g5 = " << settings.g[4] << std::endl
+              << "boundaries = " << settings.g[5] << std::endl
               << "----------------------" << std::endl
               << "variables: " << settings.variablesCount << std::endl
               << "individuals: " << settings.individualsCount << std::endl

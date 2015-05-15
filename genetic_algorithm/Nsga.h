@@ -10,7 +10,7 @@ typedef std::vector<std::vector<double>> ResultType;
 struct CoreSettings
 {
     CoreSettings(unsigned firstGenerationSize = 50, unsigned newGenerationsCount = 5,
-                 unsigned fSize = 2, unsigned gSize = 5, unsigned newVariableCount = 5)
+                 unsigned fSize = 2, unsigned gSize = 6, unsigned newVariableCount = 5)
         : f(fSize)
         , g(gSize)
         , individualsCount(firstGenerationSize)

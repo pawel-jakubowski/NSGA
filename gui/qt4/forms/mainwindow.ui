@@ -36,14 +36,14 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>100</y>
+      <y>70</y>
       <width>332</width>
       <height>91</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="2" column="0">
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="flabel">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -56,24 +56,24 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="f2label">
        <property name="text">
         <string>f2</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="f1label">
        <property name="text">
         <string>f1</string>
        </property>
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="funf1"/>
      </item>
      <item row="3" column="2">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="funf2"/>
      </item>
     </layout>
    </widget>
@@ -81,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>180</y>
       <width>351</width>
       <height>281</height>
      </rect>
@@ -93,15 +93,15 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>98</width>
-       <height>28</height>
+       <width>351</width>
+       <height>219</height>
       </rect>
      </property>
      <attribute name="label">
@@ -113,12 +113,12 @@
         <x>0</x>
         <y>0</y>
         <width>331</width>
-        <height>168</height>
+        <height>194</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="2" column="1">
-        <widget class="QLabel" name="label_9">
+        <widget class="QLabel" name="g1label">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -131,7 +131,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLabel" name="label_17">
+        <widget class="QLabel" name="g4label">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -144,7 +144,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLabel" name="label_16">
+        <widget class="QLabel" name="g3label">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -157,7 +157,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLabel" name="label_15">
+        <widget class="QLabel" name="g2label">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -169,8 +169,26 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="3">
+        <widget class="QLineEdit" name="fung3"/>
+       </item>
+       <item row="3" column="3">
+        <widget class="QLineEdit" name="fung2"/>
+       </item>
+       <item row="2" column="3">
+        <widget class="QLineEdit" name="fung1"/>
+       </item>
+       <item row="5" column="3">
+        <widget class="QLineEdit" name="fung4"/>
+       </item>
+       <item row="6" column="3">
+        <widget class="QLineEdit" name="fung5"/>
+       </item>
+       <item row="7" column="3">
+        <widget class="QLineEdit" name="bound"/>
+       </item>
        <item row="6" column="1">
-        <widget class="QLabel" name="label_18">
+        <widget class="QLabel" name="g5label">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -182,20 +200,12 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="3">
-        <widget class="QLineEdit" name="lineEdit_3"/>
-       </item>
-       <item row="3" column="3">
-        <widget class="QLineEdit" name="lineEdit_4"/>
-       </item>
-       <item row="4" column="3">
-        <widget class="QLineEdit" name="lineEdit_5"/>
-       </item>
-       <item row="5" column="3">
-        <widget class="QLineEdit" name="lineEdit_6"/>
-       </item>
-       <item row="6" column="3">
-        <widget class="QLineEdit" name="lineEdit_7"/>
+       <item row="7" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Boundaries</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -225,8 +235,14 @@
        <property name="sizeConstraint">
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="upBoundval"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="varnr"/>
+       </item>
        <item row="5" column="0">
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="upblabel">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -238,15 +254,8 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
-        <widget class="QCheckBox" name="checkBox">
-         <property name="text">
-          <string>max</string>
-         </property>
-        </widget>
-       </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="loblabel">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -258,15 +267,8 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QCheckBox" name="checkBox_2">
-         <property name="text">
-          <string>min</string>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="varlabel">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -279,7 +281,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="genlabel">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -292,7 +294,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="indlabel">
          <property name="font">
           <font>
            <weight>50</weight>
@@ -304,20 +306,14 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="loBoundval"/>
+       </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="lineEdit_8"/>
+        <widget class="QLineEdit" name="indivnr"/>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEdit_9"/>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="lineEdit_10"/>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="lineEdit_11"/>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="lineEdit_12"/>
+        <widget class="QLineEdit" name="genernr"/>
        </item>
       </layout>
      </widget>
@@ -346,7 +342,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
