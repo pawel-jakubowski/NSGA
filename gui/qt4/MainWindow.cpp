@@ -36,8 +36,8 @@ void MainWindow::on_pushButton_clicked()
     settings.g[4] = std::string(ui->fung5->text().toStdString());
     settings.g[5] = std::string(ui->bound->text().toStdString());
 
-    settings.lowerBound = ui->loBoundval->text().toInt();
-    settings.upperBound = ui->upBoundval->text().toInt();
+    settings.lowerBound = ui->loBoundval->text().toDouble();
+    settings.upperBound = ui->upBoundval->text().toDouble();
 
    core->execute(settings);
    drawer.initData(core->result());

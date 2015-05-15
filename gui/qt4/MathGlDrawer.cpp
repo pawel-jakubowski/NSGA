@@ -24,7 +24,7 @@ int MathGlDrawer::Draw(mglGraph* gr)
     gr->Box();
     gr->SetRanges(f1,f2);
     gr->Axis();
-    gr->Plot(f1,f2,"o");
+    gr->Plot(f1,f2," o");
 
     return 0;
 }
