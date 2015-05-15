@@ -6,8 +6,9 @@
 class FenotypeMock : public Fenotype
 {
 public:
-    FenotypeMock(std::vector<double> x, Functions& goalFunctions, Functions& constraints)
-        : Fenotype(goalFunctions, constraints, -5.0, 5.0)
+    FenotypeMock(std::vector<double> x, Functions& goalFunctions, Functions& constraints,
+                 double lowerBound = -5, double upperBound = 5)
+        : Fenotype(goalFunctions, constraints, lowerBound, upperBound)
     {
         gen = x;
         calculateFunctionsValues();

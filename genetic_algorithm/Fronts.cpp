@@ -61,7 +61,7 @@ SubjectsContainer Fronts::getFirstSubjects(unsigned subjectsCount)
             subjects.emplace_back(subject);
     }
     std::sort(fronts[i].begin(), fronts[i].end(),
-              [](const SubjectPtr a, const SubjectPtr b){ return *b < *a; });
+              [](const SubjectPtr a, const SubjectPtr b){ return *a < *b; });
     for(unsigned j = 0; subjects.size() < subjectsCount; ++j)
         subjects.emplace_back(fronts[i][j]);
     assert(subjects.size() == subjectsCount);

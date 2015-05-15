@@ -25,6 +25,7 @@ protected:
     std::vector<double> gValue;
     unsigned violatedConstraints;
     std::vector<double> gen;
+    double bounds[2];
 
     void crossover(const std::vector<double> &genotypeA, const std::vector<double> &genotypeB);
     void mutate();

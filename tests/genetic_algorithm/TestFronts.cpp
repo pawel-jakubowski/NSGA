@@ -139,16 +139,16 @@ TEST_FIXTURE(FrontsWithSubjects, returnFirstFront)
 
 TEST_FIXTURE(FrontsWithSubjects, getFirstNSubjects)
 {
+    const double inf = std::numeric_limits<double>::infinity();
     fronts.nonDominatedSort(subjects);
     subjects = fronts.getFirstSubjects(3);
     CHECK_EQUAL(3, subjects.size());
     for(auto& subject : subjects)
         CHECK_EQUAL(1, subject->getRank());
-    CHECK_CLOSE(0.19, subjects[0]->getDistance(), 0.01);
-    CHECK_CLOSE(0.25, subjects[1]->getDistance(), 0.01);
+    CHECK_CLOSE(inf, subjects[0]->getDistance(), 0.01);
+    CHECK_CLOSE(inf, subjects[1]->getDistance(), 0.01);
     CHECK_CLOSE(0.29, subjects[2]->getDistance(), 0.01);
 
-    const double inf = std::numeric_limits<double>::infinity();
     subjects = fronts.getFirstSubjects(6);
     CHECK_EQUAL(6, subjects.size());
     for(unsigned i = 0; i < 5; ++i)
@@ -160,5 +160,5 @@ TEST_FIXTURE(FrontsWithSubjects, getFirstNSubjects)
     CHECK_CLOSE(inf, subjects[4]->getDistance(), 0.01);
 
     CHECK_EQUAL(2, subjects[5]->getRank());
-    CHECK_CLOSE(0.12, subjects[5]->getDistance(), 0.01);
+    CHECK_CLOSE(inf, subjects[5]->getDistance(), 0.01);
 }
