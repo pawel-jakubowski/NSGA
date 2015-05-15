@@ -30,7 +30,8 @@ void Nsga::execute(const CoreSettings &settings)
     for(unsigned i = 0; i < settings.g.size(); ++i)
         g[i].parse(settings.g[i]);
 
-    population.reset(new Population(settings.individualsCount, f, g));
+    population.reset(new Population(settings.individualsCount, f, g, settings.lowerBound,
+                        settings.upperBound));
     results = population->generateGenerations(settings.generationsCount);
 }
 

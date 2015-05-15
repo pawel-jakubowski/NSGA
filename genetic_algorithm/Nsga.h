@@ -26,8 +26,8 @@ struct CoreSettings
     unsigned individualsCount;
     unsigned generationsCount;
     unsigned variablesCount;
-    unsigned lowerBound;
-    unsigned upperBound;
+    double lowerBound;
+    double upperBound;
 };
 
 

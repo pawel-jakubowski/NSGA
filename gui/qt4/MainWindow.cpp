@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
 #include <mgl2/qt.h>
 #include <mgl2/surf.h>
 #include <assert.h>
@@ -34,16 +33,30 @@ void MainWindow::on_pushButton_clicked()
     settings.g[3] = std::string(ui->lineEdit_6->text().toStdString());
     settings.g[4] = std::string(ui->lineEdit_7->text().toStdString());
 
-    std::cout << "Individaual TextBox: " << ui->lineEdit_8->text().toUInt() << std::endl;
-    settings.individualsCount = 55;
-//    settings.generationsCount = ui->lineEdit_9->text().toInt();
-//    settings.variablesCount = ui->lineEdit_10->text().toInt();
-//    settings.lowerBound = ui->lineEdit_11->text().toInt();
-//    settings.upperBound = ui->lineEdit_12->text().toInt();
+    setValidValue(ui->lineEdit_8, settings.individualsCount);
+    setValidValue(ui->lineEdit_9, settings.generationsCount);
+    setValidValue(ui->lineEdit_10, settings.variablesCount);
 
+    settings.lowerBound = ui->lineEdit_11->text().toInt();
+    settings.upperBound = ui->lineEdit_12->text().toInt();
 
    core->execute(settings);
    drawer.initData(core->result());
    QMGL->update();
 
+}
+
+void MainWindow::setValidValue(QLineEdit* line, unsigned& field)
+{
+    assert(line != NULL);
+    const QString validStyle = "background-color: white;";
+    const QString invalidStyle = "background-color: rgb(255, 96, 96);";
+
+    if (line->text().toUInt() > 0)
+    {
+        line->setStyleSheet(validStyle);
+        field = line->text().toUInt();
+    }
+    else
+        line->setStyleSheet(invalidStyle);
 }
