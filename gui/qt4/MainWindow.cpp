@@ -24,21 +24,20 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     assert(core != NULL);
-    settings.f[0] = std::string(ui->lineEdit->text().toStdString());
-    settings.f[1] = std::string(ui->lineEdit_2->text().toStdString());
+    ui->logBox->clear();
 
-    settings.g[0] = std::string(ui->lineEdit_3->text().toStdString());
-    settings.g[1] = std::string(ui->lineEdit_4->text().toStdString());
-    settings.g[2] = std::string(ui->lineEdit_5->text().toStdString());
-    settings.g[3] = std::string(ui->lineEdit_6->text().toStdString());
-    settings.g[4] = std::string(ui->lineEdit_7->text().toStdString());
+    settings.f[0] = std::string(ui->funf1->text().toStdString());
+    settings.f[1] = std::string(ui->funf2->text().toStdString());
 
-    setValidValue(ui->lineEdit_8, settings.individualsCount);
-    setValidValue(ui->lineEdit_9, settings.generationsCount);
-    setValidValue(ui->lineEdit_10, settings.variablesCount);
+    settings.g[0] = std::string(ui->fung1->text().toStdString());
+    settings.g[1] = std::string(ui->fung2->text().toStdString());
+    settings.g[2] = std::string(ui->fung3->text().toStdString());
+    settings.g[3] = std::string(ui->fung4->text().toStdString());
+    settings.g[4] = std::string(ui->fung5->text().toStdString());
+    settings.g[5] = std::string(ui->bound->text().toStdString());
 
-    settings.lowerBound = ui->lineEdit_11->text().toInt();
-    settings.upperBound = ui->lineEdit_12->text().toInt();
+    settings.lowerBound = ui->loBoundval->text().toInt();
+    settings.upperBound = ui->upBoundval->text().toInt();
 
    core->execute(settings);
    drawer.initData(core->result());
@@ -59,4 +58,19 @@ void MainWindow::setValidValue(QLineEdit* line, unsigned& field)
     }
     else
         line->setStyleSheet(invalidStyle);
+}
+
+void MainWindow::on_indivnr_textChanged(const QString)
+{
+     setValidValue(ui->indivnr, settings.individualsCount);
+}
+
+void MainWindow::on_genernr_textChanged(const QString)
+{
+    setValidValue(ui->genernr, settings.generationsCount);
+}
+
+void MainWindow::on_varnr_textChanged(const QString)
+{
+    setValidValue(ui->varnr, settings.variablesCount);
 }

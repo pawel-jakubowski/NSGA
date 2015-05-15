@@ -3,16 +3,13 @@
 
 void Nsga::execute(const CoreSettings &settings)
 {
-    std::cout << "CoreSettings:" << std::endl
-              << "f1: " << settings.f[0] << std::endl
-              << "f2: " << settings.f[1] << std::endl
-              << "----------------------" << std::endl
-              << "g1: " << settings.g[0] << std::endl
-              << "g2: " << settings.g[1] << std::endl
-              << "g3: " << settings.g[2] << std::endl
-              << "g4: " << settings.g[3] << std::endl
-              << "g5: " << settings.g[4] << std::endl
-              << "----------------------" << std::endl
+    std::cout << "CoreSettings:" << std::endl;
+    for(unsigned i = 0; i < settings.f.size(); ++i)
+        std::cout << "f"+std::to_string(i)+": " << settings.f[i] << std::endl;
+    std::cout << "----------------------" << std::endl;
+    for(unsigned i = 0; i < settings.g.size(); ++i)
+        std::cout << "g"+std::to_string(i)+": " << settings.g[i] << std::endl;
+    std::cout << "----------------------" << std::endl
               << "variables: " << settings.variablesCount << std::endl
               << "individuals: " << settings.individualsCount << std::endl
               << "generations: " << settings.generationsCount << std::endl

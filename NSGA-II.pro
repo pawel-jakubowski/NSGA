@@ -36,7 +36,6 @@ HEADERS += \
     gui/terminal/QtTerminal.h \
     libraries/exprtk.hpp \
     gui/qt4/Qt4Window.h \
-    gui/qt4/MainWindow.h \
     gui/qt4/MathGlDrawer.h \
     genetic_algorithm/Population.h \
     genetic_algorithm/Generation.h \
@@ -50,7 +49,8 @@ HEADERS += \
     genetic_algorithm/Nsga.h \
     genetic_algorithm/Front.h \
     genetic_algorithm/Fronts.h \
-    gui/qt4/QDebugStream.h
+    gui/qt4/QDebugStream.h \
+    gui/qt4/MainWindow.h
 
 # add new folders here
 INCLUDEPATH += interfaces/

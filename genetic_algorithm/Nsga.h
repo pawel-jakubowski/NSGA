@@ -10,15 +10,15 @@ typedef std::vector<std::vector<double>> ResultType;
 struct CoreSettings
 {
     CoreSettings(unsigned firstGenerationSize = 50, unsigned newGenerationsCount = 5,
-                 unsigned fSize = 2, unsigned gSize = 5, unsigned newVariableCount = 5)
+                 unsigned fSize = 2, unsigned gSize = 6, unsigned newVariableCount = 5)
         : f(fSize)
         , g(gSize)
         , individualsCount(firstGenerationSize)
         , generationsCount(newGenerationsCount)
         , variablesCount(newVariableCount)
-
+        , lowerBound(-5)
+        , upperBound(5)
     {
-
     }
 
     std::vector<std::string> f;
