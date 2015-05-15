@@ -5,6 +5,8 @@
 #include <MathGlDrawer.h>
 #include <mgl2/qmathgl.h>
 #include <Nsga.h>
+#include <memory>
+#include <QDebugStream.h>
 
 namespace Ui {
 class MainWindow;
@@ -22,10 +24,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QMathGL *QMGL;
+    std::unique_ptr<QMathGL> QMGL;
     MathGlDrawer drawer;
-    Core<ResultType>* core;
     CoreSettings settings;
+    std::unique_ptr<Core<ResultType>> core;
+    std::unique_ptr<QDebugStream> qout;
 };
 
 #endif // MAINWINDOW_H

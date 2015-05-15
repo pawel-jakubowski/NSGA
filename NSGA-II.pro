@@ -49,7 +49,8 @@ HEADERS += \
     interfaces/Core.h \
     genetic_algorithm/Nsga.h \
     genetic_algorithm/Front.h \
-    genetic_algorithm/Fronts.h
+    genetic_algorithm/Fronts.h \
+    gui/qt4/QDebugStream.h
 
 # add new folders here
 INCLUDEPATH += interfaces/

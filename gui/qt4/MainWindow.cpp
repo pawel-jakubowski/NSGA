@@ -11,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     core(new Nsga)
 {
     ui->setupUi(this);
-    QMGL = new QMathGL(ui->plotWidget);
+    qout.reset(new QDebugStream(std::cout, *(ui->logBox)));
+    QMGL.reset(new QMathGL(ui->plotWidget));
     QMGL->setDraw(&drawer);
     QMGL->update();
 }
@@ -33,7 +34,8 @@ void MainWindow::on_pushButton_clicked()
     settings.g[3] = std::string(ui->lineEdit_6->text().toStdString());
     settings.g[4] = std::string(ui->lineEdit_7->text().toStdString());
 
-//    settings.individualsCount = ui->lineEdit_8->text().toInt();
+    std::cout << "Individaual TextBox: " << ui->lineEdit_8->text().toUInt() << std::endl;
+    settings.individualsCount = 55;
 //    settings.generationsCount = ui->lineEdit_9->text().toInt();
 //    settings.variablesCount = ui->lineEdit_10->text().toInt();
 //    settings.lowerBound = ui->lineEdit_11->text().toInt();
@@ -45,5 +47,3 @@ void MainWindow::on_pushButton_clicked()
    QMGL->update();
 
 }
-
-
