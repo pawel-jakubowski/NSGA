@@ -184,6 +184,7 @@ TEST_FIXTURE(GenerationWithConstraints, checkViolatedConstraints)
 
 TEST_FIXTURE(GenerationWithConstraints, infeasibleSubjectsInNextGeneration)
 {
+    generation.reset(new GenerationMock(generation->produceNextGeneration()));
     for (unsigned i = 0; i < 20; ++i)
     {
         generation.reset(new GenerationMock(generation->produceNextGeneration()));
