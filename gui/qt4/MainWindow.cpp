@@ -43,6 +43,7 @@ void MainWindow::on_pushButton_clicked()
    drawer.initData(core->result());
    QMGL->update();
 
+//   ui->ResultView->
 }
 
 void MainWindow::setValidValue(QLineEdit* line, unsigned& field)
