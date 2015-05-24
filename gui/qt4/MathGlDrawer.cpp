@@ -10,15 +10,22 @@ MathGlDrawer::MathGlDrawer()
 
 void MathGlDrawer::initData(doublesMatrix results)
 {
-    f1.Create(results[0].size());
-    f2.Create(results[0].size());
+    std::sort(results.begin(), results.end());
+    f1.Create(results.size());
+    f2.Create(results.size());
 
-    for(unsigned i = 0; i != results[0].size(); i++)
+    const auto columnWidth = 15;
+    const auto columnsCount = 2;
+    std::cout << std::setw(columnWidth) << std::left << "f1"
+              << std::setw(columnWidth) << std::left << "f2" << std::endl
+              << std::setfill('-') << std::setw(columnWidth*columnsCount) << "-"
+              << std::setfill(' ') << std:: endl;
+    for(unsigned i = 0; i != results.size(); i++)
     {
-        f1.SetVal(results[0][i],i);
-        f2.SetVal(results[1][i],i);
-        std::cout << "f1 : " << std::setw(20) << std::left << results[0][i]
-                  << "f2 : " << std::setw(20) << std::left << results[1][i] << std::endl;
+        f1.SetVal(results[i][0],i);
+        f2.SetVal(results[i][1],i);
+        std::cout << std::setw(columnWidth) << std::left << results[i][0]
+                  << std::setw(columnWidth) << std::left << results[i][1] << std::endl;
     }
 }
 

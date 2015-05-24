@@ -40,12 +40,12 @@ TEST_FIXTURE(GenerationTest, produceNextGeneration)
         auto nextFront = generation.getFirstFront();
 
         CHECK_EQUAL(generationSize, generation.size());
-        CHECK_EQUAL(originalFront.size(), nextFront.size());
+        CHECK_EQUAL(originalFront[0].size(), nextFront[0].size());
 
-        for(unsigned i = 0; i < nextFront[0].size(); ++i)
-            for(unsigned j = 0; j < originalFront[0].size(); ++j)
-                CHECK(nextFront[0][i] <= originalFront[0][j] ||
-                      nextFront[1][i] <= originalFront[1][j]);
+        for(unsigned i = 0; i < nextFront.size(); ++i)
+            for(unsigned j = 0; j < originalFront.size(); ++j)
+                CHECK(nextFront[i][0] <= originalFront[j][0] ||
+                      nextFront[i][1] <= originalFront[j][1]);
     }
 }
 
@@ -118,13 +118,12 @@ public:
 TEST_FIXTURE(GenerationWithFronts, returnFirstFront)
 {
     std::vector<std::vector<double>> firstFront = generation.getFirstFront();
-    CHECK_EQUAL(parsed.f.size(), firstFront.size());
-    CHECK_EQUAL(5, firstFront[0].size());
-    CHECK_EQUAL(5, firstFront[1].size());
+    CHECK_EQUAL(5, firstFront.size());
+    CHECK_EQUAL(parsed.f.size(), firstFront[0].size());
     // assume that first front is on begining of our subjects vector
-    for(unsigned i = 0; i < firstFront[0].size(); ++i)
+    for(unsigned i = 0; i < firstFront.size(); ++i)
         for(unsigned j = 0; j < parsed.f.size(); ++j)
-            CHECK_EQUAL(subjects[i]->rateByF(j), firstFront[j][i]);
+            CHECK_EQUAL(subjects[i]->rateByF(j), firstFront[i][j]);
 }
 
 class GenerationWithConstraints : public GenerationWithSubjects

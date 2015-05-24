@@ -319,6 +319,11 @@
        </property>
        <item>
         <widget class="QTextEdit" name="logBox">
+         <property name="font">
+          <font>
+           <family>Ubuntu Mono</family>
+          </font>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
