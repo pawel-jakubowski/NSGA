@@ -1,6 +1,8 @@
 #include "MathGlDrawer.h"
 #include <mgl2/surf.h>
 #include <QMessageBox>
+#include <iostream>
+#include <iomanip>
 
 MathGlDrawer::MathGlDrawer()
 {
@@ -15,6 +17,8 @@ void MathGlDrawer::initData(doublesMatrix results)
     {
         f1.SetVal(results[0][i],i);
         f2.SetVal(results[1][i],i);
+        std::cout << "f1 : " << std::setw(20) << std::left << results[0][i]
+                  << "f2 : " << std::setw(20) << std::left << results[1][i] << std::endl;
     }
 }
 
