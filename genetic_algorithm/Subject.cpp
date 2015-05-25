@@ -82,3 +82,8 @@ bool Subject::operator<(const Subject &r) const
         return rank < r.rank;
 }
 
+const Fenotype &Subject::getGen() const
+{
+    return gen;
+}
+

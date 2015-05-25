@@ -129,7 +129,8 @@ TEST_FIXTURE(FrontsWithSubjects, returnFirstFront)
     fronts.nonDominatedSort(subjects);
     std::vector<std::vector<double>> firstFront = fronts.getFirstFront();
     CHECK_EQUAL(5, firstFront.size());
-    CHECK_EQUAL(parsed.f.size(), firstFront[0].size());
+    const auto xSize = 2;
+    CHECK_EQUAL(parsed.f.size()+xSize, firstFront[0].size());
     // assume that first front is on begining of our subjects vector
     for(unsigned i = 0; i < firstFront.size(); ++i)
         for(unsigned j = 0; j < parsed.f.size(); ++j)

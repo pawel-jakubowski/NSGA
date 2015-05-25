@@ -22,6 +22,7 @@ public:
     bool isDominatedBy(const Subject& s) const;
     bool operator<(const Subject& r) const; // Crowded distance operator
 
+    const Fenotype& getGen() const;
     const unsigned& getRank() const;
     const double& getDistance() const;
     void setRank(const unsigned& newRank);
