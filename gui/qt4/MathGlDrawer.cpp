@@ -15,17 +15,21 @@ void MathGlDrawer::initData(doublesMatrix results)
     f2.Create(results.size());
 
     const auto columnWidth = 15;
-    const auto columnsCount = 2;
+    const auto columnsCount = results[0].size();
     std::cout << std::setw(columnWidth) << std::left << "f1"
-              << std::setw(columnWidth) << std::left << "f2" << std::endl
+              << std::setw(columnWidth) << std::left << "f2";
+    for(unsigned i = 2; i < columnsCount; ++i)
+              std::cout << std::setw(columnWidth) << std::left << "x"+std::to_string(i-1);
+    std::cout << std::endl
               << std::setfill('-') << std::setw(columnWidth*columnsCount) << "-"
               << std::setfill(' ') << std:: endl;
     for(unsigned i = 0; i != results.size(); i++)
     {
         f1.SetVal(results[i][0],i);
         f2.SetVal(results[i][1],i);
-        std::cout << std::setw(columnWidth) << std::left << results[i][0]
-                  << std::setw(columnWidth) << std::left << results[i][1] << std::endl;
+        for(auto x : results[i])
+            std::cout << std::setw(columnWidth) << std::left << x;
+        std::cout << std::endl;
     }
 }
 

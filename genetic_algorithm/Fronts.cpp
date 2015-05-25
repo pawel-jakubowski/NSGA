@@ -72,10 +72,15 @@ SubjectsContainer Fronts::getFirstSubjects(unsigned subjectsCount)
 std::vector<std::vector<double>> Fronts::getFirstFront()
 {
     assert(fronts.size() > 0);
-    std::vector<std::vector<double>> firstFront(fronts[0].size(), std::vector<double>(f->size()));
+    std::vector<std::vector<double>> firstFront(fronts[0].size(),
+            std::vector<double>(f->size()+fronts[0][0]->getGen().getGenotype().size()));
     for(unsigned i = 0; i < fronts[0].size(); ++i)
+    {
         for(unsigned j = 0; j < f->size(); ++j)
             firstFront[i][j] = fronts[0][i]->rateByF(j);
+        for(unsigned j = 0; j < fronts[0][i]->getGen().getGenotype().size(); ++j)
+            firstFront[i][f->size()+j] = fronts[0][i]->getGen().getGenotype()[j];
+    }
     return firstFront;
 }
 
